@@ -1,29 +1,49 @@
-import logo from "./logo.svg";
 import "./App.css";
-import {} from "yup";
-import {} from "react-hook-form";
-import {} from "react-router-dom";
-import {} from "@material-ui/core";
-import {} from "redux-thunk";
-import {} from "react-redux";
+
+import { Switch, Route } from "react-router-dom";
+
+import Navbar from "./components/navbar/Navbar";
+import Register from "./components/register/Register";
+import Login from "./components/login/Login";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <nav>
+        <Navbar />
+      </nav>
+
+      <div className="body">
+        <Switch>
+          <Route exact path="/">
+            <h1>Home</h1>
+          </Route>
+
+          <Route path="/login">
+            <Login />
+          </Route>
+
+          <Route path="/cadastro">
+            <Register />
+          </Route>
+
+          <Route path="/usuario">
+            <h1> Área do usuário</h1>
+          </Route>
+
+          <Route path="/usuarios">
+            <h1>Usuarios</h1>
+          </Route>
+
+          <Route path="/sobre-nos">
+            <h1>Sobre-nós</h1>
+          </Route>
+
+          <Route path="/meu-perfil">
+            <h1>Meu perfil</h1>
+          </Route>
+        </Switch>
+      </div>
     </div>
   );
 }
