@@ -17,6 +17,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 function Copyright() {
   return (
@@ -54,6 +56,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Register() {
   const classes = useStyles();
 
+  const history = useHistory();
+
   const scheme = yup.object().shape({
     name: yup
       .string()
@@ -66,9 +70,13 @@ export default function Register() {
     password: yup
       .string()
       .required("Campo Necessário")
-      .min(6, "Mínimo de 6 caractéres"),
+      .min(6, "Mínimo de 6 caractéres")
+      .matches(
+        /^((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})/,
+        "Senha deve conter ao menos um caracter especial"
+      ),
     contact: yup.string().required("Campo Necessário"),
-    bio: yup.string(),
+    bio: yup.string().required("Campo Necessário"),
   });
 
   const { register, handleSubmit, errors } = useForm({
@@ -78,6 +86,11 @@ export default function Register() {
   const handleForm = (data) => {
     data.course_module = course_module;
     console.log(data);
+
+    axios
+      .post("https://kenziehub.me/users", data)
+      .then(() => history.push("/login"))
+      .catch((res) => console.log(res));
   };
 
   const [course_module, setCourse_madule] = useState(
@@ -214,6 +227,7 @@ export default function Register() {
                 autoComplete="bio"
                 inputRef={register}
               />
+              <p>{errors.bio?.message}</p>
             </Grid>
 
             <Grid item xs={12}>
@@ -237,7 +251,7 @@ export default function Register() {
 
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/login" variant="body2">
                 Você já tem uma conta? Fazer Login
               </Link>
             </Grid>
