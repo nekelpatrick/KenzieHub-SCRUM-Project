@@ -7,6 +7,8 @@ import Register from "./components/register/Register";
 import Login from "./components/login/Login";
 import Home from "./pages/home/Home.jsx";
 
+import UsersList from "./pages/users-list/";
+
 function App() {
   return (
     <div className="App">
@@ -33,7 +35,7 @@ function App() {
           </Route>
 
           <Route path="/usuarios">
-            <h1>Usuarios</h1>
+            <UsersList />
           </Route>
 
           <Route path="/sobre-nos">
