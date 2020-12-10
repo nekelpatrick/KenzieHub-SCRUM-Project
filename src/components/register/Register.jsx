@@ -90,7 +90,11 @@ export default function Register() {
     axios
       .post("https://kenziehub.me/users", data)
       .then(() => history.push("/login"))
-      .catch((res) => console.log(res));
+      .catch((res) => {
+        if (res.response) {
+          alert(res.response.data.message);
+        }
+      });
   };
 
   const [course_module, setCourse_madule] = useState(
@@ -137,6 +141,8 @@ export default function Register() {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
+                error={errors.name}
+                helperText={errors.name?.message}
                 autoComplete="name"
                 name="name"
                 variant="outlined"
@@ -147,11 +153,12 @@ export default function Register() {
                 autoFocus
                 inputRef={register}
               />
-              <p>{errors.name?.message}</p>
             </Grid>
 
             <Grid item xs={12}>
               <TextField
+                error={errors.email}
+                helperText={errors.email?.message}
                 variant="outlined"
                 required
                 fullWidth
@@ -161,11 +168,12 @@ export default function Register() {
                 autoComplete="email"
                 inputRef={register}
               />
-              <p>{errors.email?.message}</p>
             </Grid>
 
             <Grid item xs={12}>
               <TextField
+                error={errors.password}
+                helperText={errors.password?.message}
                 variant="outlined"
                 required
                 fullWidth
@@ -176,11 +184,12 @@ export default function Register() {
                 autoComplete="current-password"
                 inputRef={register}
               />
-              <p>{errors.password?.message}</p>
             </Grid>
 
             <Grid item xs={12}>
               <TextField
+                error={errors.contact}
+                helperText={errors.contact?.message}
                 variant="outlined"
                 required
                 fullWidth
@@ -190,7 +199,6 @@ export default function Register() {
                 autoComplete="contact"
                 inputRef={register}
               />
-              <p>{errors.contact?.message}</p>
             </Grid>
 
             <Grid item xs={12}>
@@ -216,6 +224,8 @@ export default function Register() {
 
             <Grid className="bio" item xs={12}>
               <TextField
+                error={errors.bio}
+                helperText={errors.bio?.message}
                 variant="outlined"
                 required
                 fullWidth
