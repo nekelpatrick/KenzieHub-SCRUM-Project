@@ -101,6 +101,8 @@ export default function SignIn() {
           noValidate
         >
           <TextField
+            error={errors.email}
+            helperText={errors.email?.message}
             variant="outlined"
             margin="normal"
             required
@@ -112,9 +114,9 @@ export default function SignIn() {
             autoFocus
           />
 
-          <p style={{ color: "red" }}>{errors.email?.message}</p>
-
           <TextField
+            error={errors.password}
+            helperText={errors.password?.message}
             variant="outlined"
             margin="normal"
             required
@@ -125,8 +127,6 @@ export default function SignIn() {
             id="password"
             inputRef={register}
           />
-
-          <p style={{ color: "red" }}>{errors.password?.message}</p>
 
           <FormControlLabel
             control={
