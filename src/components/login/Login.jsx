@@ -11,6 +11,12 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
+import Cookies from "js-cookie";
 
 function Copyright() {
   return (
@@ -48,8 +54,38 @@ const useStyles = makeStyles((theme) => ({
 export default function SignIn() {
   const classes = useStyles();
 
+  const history = useHistory();
+
+  const confirmation = yup.object().shape({
+    email: yup.string().required("Campo Obrigatório"),
+
+    password: yup.string().required("Campo Obrigatório"),
+  });
+
+  const { register, handleSubmit, errors } = useForm({
+    resolver: yupResolver(confirmation),
+  });
+
+  const isRemember = (evt) => {
+    return evt.target.checked;
+  };
+
+  const handleForm = (user) => {
+    axios
+      .post("https://kenziehub.me/sessions", user)
+      .then((res) => {
+        isRemember
+          ? Cookies.set("token", res.data.token, { expires: 2 })
+          : window.localStorage.setItem("token", res.data.token);
+
+        history.push("/usuarios");
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <Container component="main" maxWidth="xs">
+      {Cookies.get("token") && history.push("/usuários")}
       <CssBaseline />
 
       <div className={classes.paper}>
@@ -59,7 +95,11 @@ export default function SignIn() {
           Entrar
         </Typography>
 
-        <form className={classes.form} noValidate>
+        <form
+          className={classes.form}
+          onSubmit={handleSubmit(handleForm)}
+          noValidate
+        >
           <TextField
             variant="outlined"
             margin="normal"
@@ -68,9 +108,11 @@ export default function SignIn() {
             id="email"
             label="Endereço de e-mail"
             name="email"
-            autoComplete="email"
+            inputRef={register}
             autoFocus
           />
+
+          <p style={{ color: "red" }}>{errors.email?.message}</p>
 
           <TextField
             variant="outlined"
@@ -79,17 +121,24 @@ export default function SignIn() {
             fullWidth
             name="password"
             label="Password"
-            type="Senha"
+            type="password"
             id="password"
-            autoComplete="current-password"
+            inputRef={register}
           />
 
+          <p style={{ color: "red" }}>{errors.password?.message}</p>
+
           <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
+            control={
+              <Checkbox
+                value="remember"
+                color="primary"
+                onChange={isRemember}
+              />
+            }
             label="Mantenha-me conectado"
           />
 
-          {/* QUANDO FOR FAZER ALGO COM O FORMULÁRIO, USAR O ONSUBMIT */}
           <Button
             type="submit"
             fullWidth
@@ -108,7 +157,7 @@ export default function SignIn() {
             </Grid>
 
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/cadastro" variant="body2">
                 {"Não possuí uma conta?"}
               </Link>
             </Grid>
