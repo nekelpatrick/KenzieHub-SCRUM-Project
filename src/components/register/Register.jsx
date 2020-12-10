@@ -92,10 +92,12 @@ export default function Register() {
       .then(() => history.push("/login"))
       .catch((res) => {
         if (res.response) {
-          alert(res.response.data.message);
+          setEmailError("Email já cadastrado");
         }
       });
   };
+
+  const [emailError, setEmailError] = useState("");
 
   const [course_module, setCourse_madule] = useState(
     "Primeiro módulo (Introdução ao Frontend)"
@@ -157,8 +159,8 @@ export default function Register() {
 
             <Grid item xs={12}>
               <TextField
-                error={errors.email}
-                helperText={errors.email?.message}
+                error={errors.email || emailError}
+                helperText={errors.email?.message || emailError}
                 variant="outlined"
                 required
                 fullWidth
