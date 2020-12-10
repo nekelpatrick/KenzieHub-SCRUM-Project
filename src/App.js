@@ -5,6 +5,9 @@ import { Switch, Route } from "react-router-dom";
 import Navbar from "./components/navbar/Navbar";
 import Register from "./components/register/Register";
 import Login from "./components/login/Login";
+import Home from "./pages/home/Home.jsx";
+
+import UsersList from "./pages/users-list/";
 
 function App() {
   return (
@@ -16,7 +19,7 @@ function App() {
       <div className="body">
         <Switch>
           <Route exact path="/">
-            <h1>Home</h1>
+            <Home />
           </Route>
 
           <Route path="/login">
@@ -32,7 +35,7 @@ function App() {
           </Route>
 
           <Route path="/usuarios">
-            <h1>Usuarios</h1>
+            <UsersList />
           </Route>
 
           <Route path="/sobre-nos">
