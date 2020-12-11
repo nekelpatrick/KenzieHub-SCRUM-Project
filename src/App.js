@@ -6,8 +6,8 @@ import Navbar from "./components/navbar/Navbar";
 import Register from "./components/register/Register";
 import Login from "./components/login/Login";
 import Home from "./pages/home/Home.jsx";
-
-import UsersList from "./pages/users-list/";
+import UsersList from "./pages/users-list/UserList";
+import UserProfile from "./pages/user-profile/UserProfile";
 
 function App() {
   return (
@@ -44,6 +44,7 @@ function App() {
 
           <Route path="/meu-perfil">
             <h1>Meu perfil</h1>
+            <UserProfile />
           </Route>
         </Switch>
       </div>

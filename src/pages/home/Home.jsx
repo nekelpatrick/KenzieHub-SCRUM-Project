@@ -10,7 +10,7 @@ import { Collapse } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: "100vh",
-    backgroundImage: `url( /img/background3.jpg)`,
+    backgroundImage: `url( ./assets/img/background3.jpg)`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
     display: "flex",
