@@ -3,6 +3,10 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
+import Cookies from "js-cookie";
+
+import { getUserThunk, updateUserThunk } from "../../store/modules/user/thunk";
 
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -13,9 +17,15 @@ import {
   MenuItem,
   Button,
   IconButton,
+  Snackbar,
 } from "@material-ui/core";
+import MuiAlert from "@material-ui/lab/Alert";
 import { RiImageEditLine } from "react-icons/ri";
 
+// METERIAL-UI RELATED
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100vh",
@@ -42,15 +52,42 @@ const useStyles = makeStyles((theme) => ({
   },
   buttons: {
     display: "flex",
+    maxWidth: 250,
     justifyContent: "space-between",
-    flexDirection: "row",
+    flexDirection: "column",
     marginTop: 30,
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+  messages: {
+    marginTop: 30,
+    marginBottom: 30,
+    width: 250,
   },
 }));
 
 export default function UserProfile() {
+  // GLOBAL VARIABLES
   const classes = useStyles();
+  let image = false;
 
+  // GLOBAL STATES
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  useEffect(() => {
+    setWillChangePassword(false);
+  }, [user]);
+
+  // LOCAL STATES
+  const [willChangePassword, setWillChangePassword] = useState(false);
+  const [updateMessage, setUpdateMessage] = useState("");
+  const [course_module, setCourse_madule] = useState("");
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    dispatch(getUserThunk(Cookies.get("token") || ""));
+  }, []);
+
+  // VALIDATION WITH YUP
   const schema = yup.object().shape({
     name: yup
       .string()
@@ -67,7 +104,7 @@ export default function UserProfile() {
         /^((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})/,
         "Senha deve conter ao menos um caracter especial"
       ),
-    new_password: yup
+    password: yup
       .string()
       .min(6, "Mínimo de 6 caractéres")
       .matches(
@@ -76,28 +113,24 @@ export default function UserProfile() {
       ),
     contact: yup.string().required("Campo Necessário"),
     bio: yup.string().required("Campo Necessário"),
-    image: yup.mixed(),
   });
   const { register, handleSubmit, errors } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const [user, setUser] = useState({});
-  const [course_module, setCourse_madule] = useState(
-    "Primeiro módulo (Introdução ao Frontend)"
-  );
+  // UPADATE MESSAGE
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
 
-  useEffect(() => {
-    axios
-      .get("https://kenziehub.me/users/8b8e50a6-50c2-4718-b817-2d38cad0c8f4")
-      .then((res) => setUser(res.data));
-  }, []);
-  console.log(user);
+    setOpen(false);
+  };
 
+  // COURSE_MODULES HANDLERS
   const handleChange = (evt) => {
     setCourse_madule(evt.target.value);
   };
-
   const modules = [
     {
       value: "Primeiro módulo (Introdução ao Frontend)",
@@ -117,9 +150,18 @@ export default function UserProfile() {
     },
   ];
 
+  // GET AVATAR HANDLER
+  const handleAvatarChange = (e) => {
+    image = new FormData();
+    image.append("avatar", e.target.files[0]);
+  };
+
+  // FORM HANDLER
   const handleForm = (data) => {
     data.course_module = course_module;
-    console.log(data);
+    data.image = image;
+    dispatch(updateUserThunk(data, Cookies.get("token"), setUpdateMessage));
+    setOpen(true);
   };
 
   return (
@@ -146,11 +188,11 @@ export default function UserProfile() {
               </IconButton>
             </label>
             <input
-              ref={register}
               name="image"
               id="image"
               style={{ display: "none" }}
               type="file"
+              onChange={handleAvatarChange}
             />
             <Container maxWidth="md" className={classes.textContainer}>
               <Typography className={classes.text} variant="body1">
@@ -205,9 +247,8 @@ export default function UserProfile() {
                 fullWidth
                 select
                 style={{ margin: 8, textAlign: "left" }}
-                value={course_module}
+                value={course_module ? course_module : user.course_module}
                 onChange={handleChange}
-                id="course_module"
                 name="course_module"
               >
                 {modules.map((module, index) => (
@@ -249,45 +290,66 @@ export default function UserProfile() {
                 variant="outlined"
               />
             </Container>
-            <Container maxWidth="md" className={classes.textContainer}>
-              <Typography className={classes.text} variant="body1">
-                Senha Antiga:
-              </Typography>
-              <TextField
-                inputRef={register}
-                name="old_password"
-                error={!!errors.old_password}
-                helperText={errors.old_password?.message}
-                style={{ margin: 8 }}
-                fullWidth
-                type="password"
-                variant="outlined"
-              />
-            </Container>
-            <Container maxWidth="md" className={classes.textContainer}>
-              <Typography className={classes.text} variant="body1">
-                Nova Senha:
-              </Typography>
-              <TextField
-                inputRef={register}
-                name="new_password"
-                error={!!errors.new_password}
-                helperText={errors.new_password?.message}
-                style={{ margin: 8 }}
-                fullWidth
-                type="password"
-                variant="outlined"
-              />
-            </Container>
+            {willChangePassword && (
+              <>
+                <Container maxWidth="md" className={classes.textContainer}>
+                  <Typography className={classes.text} variant="body1">
+                    Senha Antiga:
+                  </Typography>
+                  <TextField
+                    inputRef={register}
+                    name="old_password"
+                    error={!!errors.old_password}
+                    helperText={errors.old_password?.message}
+                    style={{ margin: 8 }}
+                    fullWidth
+                    type="password"
+                    variant="outlined"
+                  />
+                </Container>
+                <Container maxWidth="md" className={classes.textContainer}>
+                  <Typography className={classes.text} variant="body1">
+                    Nova Senha:
+                  </Typography>
+                  <TextField
+                    inputRef={register}
+                    name="password"
+                    error={!!errors.password}
+                    helperText={errors.password?.message}
+                    style={{ margin: 8 }}
+                    fullWidth
+                    type="password"
+                    variant="outlined"
+                  />
+                </Container>
+              </>
+            )}
             <Container className={classes.buttons}>
-              <Button type="submit" variant="contained" color="secondary">
-                DELETAR CONTA
+              <Button
+                onClick={() => setWillChangePassword(!willChangePassword)}
+                variant="contained"
+                color="secondary"
+                style={{ marginBottom: "30px" }}
+              >
+                {willChangePassword ? "MANTER SENHA" : "ALTERAR SENHA"}
               </Button>
               <Button type="submit" variant="contained" color="primary">
                 SALVAR ALTERAÇÕES
               </Button>
             </Container>
           </form>
+          <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
+            <Alert
+              className={classes.messages}
+              severity={
+                updateMessage === "Senha antiga incorreta."
+                  ? "error"
+                  : "success"
+              }
+            >
+              {updateMessage}
+            </Alert>
+          </Snackbar>
         </Container>
       )}
     </>
