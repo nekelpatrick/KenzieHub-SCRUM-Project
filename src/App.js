@@ -9,6 +9,7 @@ import UsersList from "./pages/users-list/UserList";
 import UserProfile from "./pages/user-profile/UserProfile";
 
 import RegisterPage from "./pages/register";
+import UserArea from "./pages/user-area";
 
 function App() {
   return (
@@ -32,7 +33,7 @@ function App() {
           </Route>
 
           <Route path="/usuario">
-            <h1> Área do usuário</h1>
+            <UserArea />
           </Route>
 
           <Route path="/usuarios">
