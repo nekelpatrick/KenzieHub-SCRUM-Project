@@ -60,6 +60,20 @@ export default function UserProfile() {
       .string()
       .required("Campo Necessário")
       .email("Formato de email Inválido"),
+    old_password: yup
+      .string()
+      .min(6, "Mínimo de 6 caractéres")
+      .matches(
+        /^((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})/,
+        "Senha deve conter ao menos um caracter especial"
+      ),
+    new_password: yup
+      .string()
+      .min(6, "Mínimo de 6 caractéres")
+      .matches(
+        /^((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})/,
+        "Senha deve conter ao menos um caracter especial"
+      ),
     contact: yup.string().required("Campo Necessário"),
     bio: yup.string().required("Campo Necessário"),
     image: yup.mixed(),
@@ -78,6 +92,7 @@ export default function UserProfile() {
       .get("https://kenziehub.me/users/8b8e50a6-50c2-4718-b817-2d38cad0c8f4")
       .then((res) => setUser(res.data));
   }, []);
+  console.log(user);
 
   const handleChange = (evt) => {
     setCourse_madule(evt.target.value);
@@ -226,11 +241,41 @@ export default function UserProfile() {
                 inputRef={register}
                 name="contact"
                 id="contact"
-                error={!!errors.bio}
-                helperText={errors.bio?.message}
+                error={!!errors.contact}
+                helperText={errors.contact?.message}
                 style={{ margin: 8 }}
                 defaultValue={user.contact}
                 fullWidth
+                variant="outlined"
+              />
+            </Container>
+            <Container maxWidth="md" className={classes.textContainer}>
+              <Typography className={classes.text} variant="body1">
+                Senha Antiga:
+              </Typography>
+              <TextField
+                inputRef={register}
+                name="old_password"
+                error={!!errors.old_password}
+                helperText={errors.old_password?.message}
+                style={{ margin: 8 }}
+                fullWidth
+                type="password"
+                variant="outlined"
+              />
+            </Container>
+            <Container maxWidth="md" className={classes.textContainer}>
+              <Typography className={classes.text} variant="body1">
+                Nova Senha:
+              </Typography>
+              <TextField
+                inputRef={register}
+                name="new_password"
+                error={!!errors.new_password}
+                helperText={errors.new_password?.message}
+                style={{ margin: 8 }}
+                fullWidth
+                type="password"
                 variant="outlined"
               />
             </Container>
