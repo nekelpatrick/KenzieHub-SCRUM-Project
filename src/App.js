@@ -8,6 +8,8 @@ import Home from "./pages/home/Home.jsx";
 import UsersList from "./pages/users-list/UserList";
 import UserProfile from "./pages/user-profile/UserProfile";
 
+import UserArea from "./pages/user-area/UserArea";
+
 import RegisterPage from "./pages/register";
 
 function App() {
@@ -33,6 +35,7 @@ function App() {
 
           <Route path="/usuario">
             <h1> Área do usuário</h1>
+            <UserArea />
           </Route>
 
           <Route path="/usuarios">
