@@ -53,12 +53,16 @@ const useStyles = makeStyles((theme) => ({
       fontSize: "14px",
     },
   },
+  buttons: {
+    padding: "1px",
+    justifyContent: "center",
+  },
 }));
 
 export default function UserCard({
-  inputFields,
-  setInputFields,
-  inputField,
+  inputCards,
+  setInputCards,
+  inputCard,
   index,
 }) {
   const classes = useStyles();
@@ -80,15 +84,15 @@ export default function UserCard({
 
   const handleChangeInput = (index, event) => {
     // console.log(index, event.target.name);
-    const values = [...inputFields];
+    const values = [...inputCards];
     values[index][event.target.name] = event.target.value;
-    setInputFields(values);
+    setInputCards(values);
   };
 
   const handleRemoveCard = (index) => {
-    const values = [...inputFields];
+    const values = [...inputCards];
     values.splice(index, 1);
-    setInputFields(values);
+    setInputCards(values);
   };
 
   return (
@@ -105,7 +109,7 @@ export default function UserCard({
               label="Nome do Projeto "
               multiline
               rowsMax={2}
-              value={inputField.title}
+              value={inputCard.title}
               variant="outlined"
               onChange={(event) => handleChangeInput(index, event)}
             />
@@ -119,7 +123,7 @@ export default function UserCard({
               multiline
               rows={5}
               variant="outlined"
-              value={inputField.description}
+              value={inputCard.description}
               onChange={(event) => handleChangeInput(index, event)}
             />
             <TextField
@@ -132,14 +136,14 @@ export default function UserCard({
               placeholder="https://exemplo.com/example"
               multiline
               variant="outlined"
-              value={inputField.url}
+              value={inputCard.url}
               onChange={(event) => handleChangeInput(index, event)}
             />
           </div>
         </form>
       </CardContent>
 
-      <CardActions>
+      <CardActions className={classes.buttons}>
         <IconButton onClick={enableEdit}>
           <FaEdit className={classes.editButton} />
         </IconButton>

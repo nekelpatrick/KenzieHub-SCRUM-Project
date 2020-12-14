@@ -5,7 +5,7 @@ import { useState } from "react";
 import UserCard from "../../components/user-area-card/Card";
 import AddNewCard from "../../components/user-area-addNew/AddNewCard";
 
-import { Grid } from "@material-ui/core";
+import { Grid, Paper, Tabs, Tab } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -26,41 +26,51 @@ const useStyles = makeStyles((theme) => ({
 const UserArea = () => {
   const classes = useStyles();
 
-  // const addNew = () => {
-  //   return <AddNewCard />;
-  // };
-
-  // const [inputList, setInputList] = useState([]);
-
-  // const onAddBtnClick = (event) => {
-  //   setInputList(inputList.concat(<UserCard key={inputList.length} />));
-  // };
-
-  const [inputFields, setInputFields] = useState([
+  const [inputCards, setInputCards] = useState([
     { projectName: "", desc: "", url: "" },
   ]);
 
+  const [selector, setSelector] = useState(0);
+
+  const handleChange = (event, newValue) => {
+    setSelector(newValue);
+  };
+
   return (
     <div>
-      <Grid className={classes.root} container spacing={1}>
-        {inputFields.map((inputField, index) => (
-          <Grid key={index} item xs={12} sm={6} md={4}>
-            <UserCard
-              inputFields={inputFields}
-              setInputFields={setInputFields}
-              index={index}
-              inputField={inputField}
-            />
-          </Grid>
-        ))}
+      <Paper className={classes.root}>
+        <Tabs
+          value={selector}
+          onChange={handleChange}
+          indicatorColor="primary"
+          textColor="primary"
+          centered
+        >
+          <Tab label="Seus Projetos" />
+          <Tab label="Suas Techs" />
+        </Tabs>
+      </Paper>
 
-        <Grid item xs={12} sm={6} md={4}>
-          <AddNewCard
-            inputFields={inputFields}
-            setInputFields={setInputFields}
-          />
+      {selector === 0 ? (
+        <Grid className={classes.root} container spacing={1}>
+          {inputCards.map((inputCard, index) => (
+            <Grid key={index} item xs={12} sm={6} md={4}>
+              <UserCard
+                inputCards={inputCards}
+                setInputCards={setInputCards}
+                index={index}
+                inputCard={inputCard}
+              />
+            </Grid>
+          ))}
+
+          <Grid item xs={12} sm={6} md={4}>
+            <AddNewCard inputCards={inputCards} setInputCards={setInputCards} />
+          </Grid>
         </Grid>
-      </Grid>
+      ) : (
+        <h1>Techs</h1>
+      )}
     </div>
   );
 };

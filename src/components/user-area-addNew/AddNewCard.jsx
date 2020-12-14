@@ -19,12 +19,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function OutlinedCard({ inputFields, setInputFields }) {
+export default function OutlinedCard({ inputCards, setInputCards }) {
   const classes = useStyles();
 
-  console.log(inputFields);
+  console.log(inputCards);
   const handleAddCard = () => {
-    setInputFields([...inputFields, { projectName: "", desc: "", url: "" }]);
+    setInputCards([...inputCards, { projectName: "", desc: "", url: "" }]);
   };
 
   return (
