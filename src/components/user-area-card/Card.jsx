@@ -51,14 +51,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UserCard() {
+export default function UserCard({
+  inputFields,
+  setInputFields,
+  inputField,
+  index,
+}) {
   const classes = useStyles();
+
   const [value, setValue] = useState("");
   const [edit, setEdit] = useState(true);
 
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
+  // const handleChange = (event) => {
+  //   setValue(event.target.value);
+  // };
 
   const enableEdit = () => {
     setEdit(false);
@@ -68,43 +74,58 @@ export default function UserCard() {
     setEdit(true);
   };
 
+  const handleChangeInput = (index, event) => {
+    // console.log(index, event.target.name);
+    const values = [...inputFields];
+    values[index][event.target.name] = event.target.value;
+    setInputFields(values);
+  };
+
   return (
     <Card className={classes.root} variant="outlined">
       <CardContent>
         <form className={classes.form} noValidate autoComplete="off">
-          <FormControl>
+          {/*  */}
+          <div>
             <TextField
+              name="title"
               className={classes.textField}
               disabled={edit}
               id="outlined-multiline-flexible"
               label="Nome do Projeto "
               multiline
               rowsMax={2}
-              value={value}
-              onChange={handleChange}
+              value={inputField.title}
               variant="outlined"
+              onChange={(event) => handleChangeInput(index, event)}
             />
-          </FormControl>
-          <TextField
-            className={classes.textField}
-            disabled={edit}
-            id="outlined-multiline-static"
-            label="Descreva o projeto"
-            placeholder="Descreva o projeto"
-            multiline
-            rows={5}
-            variant="outlined"
-          />
-          <TextField
-            className={classes.textField}
-            disabled={edit}
-            type="url"
-            id="outlined-textarea"
-            label="Insira um Link para o seu projeto"
-            placeholder="https://exemplo.com/example"
-            multiline
-            variant="outlined"
-          />
+            <TextField
+              name="description"
+              className={classes.textField}
+              disabled={edit}
+              id="outlined-multiline-static"
+              label="Descreva o projeto"
+              placeholder="Descreva o projeto"
+              multiline
+              rows={5}
+              variant="outlined"
+              value={inputField.description}
+              onChange={(event) => handleChangeInput(index, event)}
+            />
+            <TextField
+              name="url"
+              className={classes.textField}
+              disabled={edit}
+              type="url"
+              id="outlined-textarea"
+              label="Insira um Link para o seu projeto"
+              placeholder="https://exemplo.com/example"
+              multiline
+              variant="outlined"
+              value={inputField.url}
+              onChange={(event) => handleChangeInput(index, event)}
+            />
+          </div>
         </form>
       </CardContent>
 

@@ -28,33 +28,39 @@ const useStyles = makeStyles((theme) => ({
 const UserArea = () => {
   const classes = useStyles();
 
-  const addNew = () => {
-    return <AddNewCard />;
-  };
+  // const addNew = () => {
+  //   return <AddNewCard />;
+  // };
 
-  const [inputList, setInputList] = useState([]);
+  // const [inputList, setInputList] = useState([]);
 
-  const onAddBtnClick = (event) => {
-    setInputList(inputList.concat(<UserCard key={inputList.length} />));
-  };
+  // const onAddBtnClick = (event) => {
+  //   setInputList(inputList.concat(<UserCard key={inputList.length} />));
+  // };
+
+  const [inputFields, setInputFields] = useState([
+    { projectName: "", desc: "", url: "" },
+  ]);
 
   return (
     <div>
       <Grid className={classes.root} container spacing={1}>
-        <Grid item xs={12} sm={6} md={4}>
-          <UserCard />
-        </Grid>
+        {inputFields.map((inputField, index) => (
+          <Grid item xs={12} sm={6} md={4}>
+            <UserCard
+              inputFields={inputFields}
+              setInputFields={setInputFields}
+              index={index}
+              inputField={inputField}
+            />
+          </Grid>
+        ))}
 
         <Grid item xs={12} sm={6} md={4}>
-          <UserCard />
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={4}>
-          <UserCard />
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={4}>
-          <AddNewCard />
+          <AddNewCard
+            inputFields={inputFields}
+            setInputFields={setInputFields}
+          />
         </Grid>
       </Grid>
     </div>
