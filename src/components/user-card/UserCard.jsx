@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
@@ -33,15 +33,37 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#C4C4C4",
     width: 100,
     height: 100,
+    [theme.breakpoints.down("xs")]: {
+      width: 70,
+      height: 70,
+    },
+  },
+  username: {
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "1.6rem",
+    },
   },
   text: {
     textAlign: "left",
+  },
+  skillContainer: {
+    display: "flex",
+  },
+  skillTitle: {
+    flex: "0 0 18%",
+  },
+  skillContent: {
+    flex: "1 0 80%",
   },
 }));
 
 export default function UserCard({ user }) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
+
+  useEffect(() => {
+    setExpanded(false);
+  }, [user]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -60,7 +82,12 @@ export default function UserCard({ user }) {
           </Avatar>
         }
         title={
-          <Typography variant="h4" color="textPrimary" component="p">
+          <Typography
+            className={classes.username}
+            variant="h4"
+            color="textPrimary"
+            component="p"
+          >
             {user.name}
           </Typography>
         }
@@ -92,12 +119,43 @@ export default function UserCard({ user }) {
             {user.email && "Email : " + user.email}
           </Typography>
           <Typography className={classes.text} paragraph>
-            {user.techs.length > 0 &&
-              "Tecnologias : " + user.techs.map((tech) => tech.title + " ")}
+            {user.techs.length > 0 && (
+              <div className={classes.skillContainer}>
+                <div className={classes.skillTitle}>Tecnologias: </div>
+                <div>
+                  {user.techs.map((tech) => {
+                    return (
+                      <>
+                        <div className={classes.skillContent}>
+                          {`${tech.title} - ${tech.status}`}
+                        </div>
+                      </>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </Typography>
           <Typography className={classes.text} paragraph>
-            {user.works.length > 0 &&
-              "Trabalhos : " + user.works.map((work) => work.title + " ")}
+            {user.works.length > 0 && (
+              <div className={classes.skillContainer}>
+                <div className={classes.skillTitle}>Trabalhos: </div>
+                <div>
+                  {user.works.map((work) => {
+                    return (
+                      <>
+                        <div className={classes.skillContent}>
+                          {work.title} -{" "}
+                          <a target="blank" href={work.deploy_url}>
+                            link
+                          </a>
+                        </div>
+                      </>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </Typography>
         </CardContent>
       </Collapse>
