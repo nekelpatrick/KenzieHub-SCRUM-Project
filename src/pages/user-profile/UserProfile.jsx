@@ -36,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
   },
   text: {
     fontSize: 24,
-    textAlign: "left",
     flex: "1 0 12%",
     textAlign: "right",
   },
