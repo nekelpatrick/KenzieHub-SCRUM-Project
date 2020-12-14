@@ -19,13 +19,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function OutlinedCard() {
+export default function OutlinedCard({ inputCards, setInputCards }) {
   const classes = useStyles();
+
+  console.log(inputCards);
+  const handleAddCard = () => {
+    setInputCards([...inputCards, { projectName: "", desc: "", url: "" }]);
+  };
 
   return (
     <Card className={classes.root} variant="outlined">
       <CardActions>
-        <Button>
+        <Button onClick={() => handleAddCard()}>
           <IconButton className={classes.buttonAdd} size="medium">
             <MdLibraryAdd />
           </IconButton>

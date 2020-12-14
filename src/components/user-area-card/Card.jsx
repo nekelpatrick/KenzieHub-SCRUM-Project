@@ -19,9 +19,9 @@ import { ImCheckboxChecked } from "react-icons/im";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: 250,
+    minWidth: 350,
     marginTop: "10%",
-    maxWidth: 300,
+    maxWidth: 400,
   },
   form: {
     "& .MuiTextField-root": {
@@ -46,19 +46,33 @@ const useStyles = makeStyles((theme) => ({
   },
   textField: {
     "& .MuiInputBase-root": {
-      width: "19vw",
+      width: "13.5vw",
+      padding: "20px",
     },
+    "& .MuiFormLabel-root": {
+      fontSize: "14px",
+    },
+  },
+  buttons: {
+    padding: "1px",
+    justifyContent: "center",
   },
 }));
 
-export default function UserCard() {
+export default function UserCard({
+  inputCards,
+  setInputCards,
+  inputCard,
+  index,
+}) {
   const classes = useStyles();
+
   const [value, setValue] = useState("");
   const [edit, setEdit] = useState(true);
 
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
+  // const handleChange = (event) => {
+  //   setValue(event.target.value);
+  // };
 
   const enableEdit = () => {
     setEdit(false);
@@ -68,52 +82,73 @@ export default function UserCard() {
     setEdit(true);
   };
 
+  const handleChangeInput = (index, event) => {
+    // console.log(index, event.target.name);
+    const values = [...inputCards];
+    values[index][event.target.name] = event.target.value;
+    setInputCards(values);
+  };
+
+  const handleRemoveCard = (index) => {
+    const values = [...inputCards];
+    values.splice(index, 1);
+    setInputCards(values);
+  };
+
   return (
     <Card className={classes.root} variant="outlined">
       <CardContent>
         <form className={classes.form} noValidate autoComplete="off">
-          <FormControl>
+          {/*  */}
+          <div>
             <TextField
+              name="title"
               className={classes.textField}
               disabled={edit}
               id="outlined-multiline-flexible"
               label="Nome do Projeto "
               multiline
               rowsMax={2}
-              value={value}
-              onChange={handleChange}
+              value={inputCard.title}
               variant="outlined"
+              onChange={(event) => handleChangeInput(index, event)}
             />
-          </FormControl>
-          <TextField
-            className={classes.textField}
-            disabled={edit}
-            id="outlined-multiline-static"
-            label="Descreva o projeto"
-            placeholder="Descreva o projeto"
-            multiline
-            rows={5}
-            variant="outlined"
-          />
-          <TextField
-            className={classes.textField}
-            disabled={edit}
-            type="url"
-            id="outlined-textarea"
-            label="Insira um Link para o seu projeto"
-            placeholder="https://exemplo.com/example"
-            multiline
-            variant="outlined"
-          />
+            <TextField
+              name="description"
+              className={classes.textField}
+              disabled={edit}
+              id="outlined-multiline-static"
+              label="Descreva o projeto"
+              placeholder="Descreva o projeto"
+              multiline
+              rows={5}
+              variant="outlined"
+              value={inputCard.description}
+              onChange={(event) => handleChangeInput(index, event)}
+            />
+            <TextField
+              name="url"
+              className={classes.textField}
+              disabled={edit}
+              type="url"
+              id="outlined-textarea"
+              label="Link para o seu projeto"
+              placeholder="https://exemplo.com/example"
+              multiline
+              variant="outlined"
+              value={inputCard.url}
+              onChange={(event) => handleChangeInput(index, event)}
+            />
+          </div>
         </form>
       </CardContent>
 
-      <CardActions>
+      <CardActions className={classes.buttons}>
         <IconButton onClick={enableEdit}>
           <FaEdit className={classes.editButton} />
         </IconButton>
 
-        <IconButton>
+        <IconButton onClick={() => handleRemoveCard(index)}>
           <MdDelete className={classes.deleteButton} />
         </IconButton>
 
