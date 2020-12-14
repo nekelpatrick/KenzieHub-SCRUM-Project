@@ -15,13 +15,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "3%",
     paddingLeft: "30px",
     paddingRight: "30px",
+    padding: theme.spacing(1),
   },
   paper: {
     height: 140,
     width: 100,
-  },
-  control: {
-    padding: theme.spacing(2),
   },
 }));
 
@@ -46,7 +44,7 @@ const UserArea = () => {
     <div>
       <Grid className={classes.root} container spacing={1}>
         {inputFields.map((inputField, index) => (
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid key={index} item xs={12} sm={6} md={4}>
             <UserCard
               inputFields={inputFields}
               setInputFields={setInputFields}

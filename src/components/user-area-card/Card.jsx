@@ -19,9 +19,9 @@ import { ImCheckboxChecked } from "react-icons/im";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: 250,
+    minWidth: 350,
     marginTop: "10%",
-    maxWidth: 300,
+    maxWidth: 400,
   },
   form: {
     "& .MuiTextField-root": {
@@ -46,7 +46,11 @@ const useStyles = makeStyles((theme) => ({
   },
   textField: {
     "& .MuiInputBase-root": {
-      width: "19vw",
+      width: "13.5vw",
+      padding: "20px",
+    },
+    "& .MuiFormLabel-root": {
+      fontSize: "14px",
     },
   },
 }));
@@ -78,6 +82,12 @@ export default function UserCard({
     // console.log(index, event.target.name);
     const values = [...inputFields];
     values[index][event.target.name] = event.target.value;
+    setInputFields(values);
+  };
+
+  const handleRemoveCard = (index) => {
+    const values = [...inputFields];
+    values.splice(index, 1);
     setInputFields(values);
   };
 
@@ -118,7 +128,7 @@ export default function UserCard({
               disabled={edit}
               type="url"
               id="outlined-textarea"
-              label="Insira um Link para o seu projeto"
+              label="Link para o seu projeto"
               placeholder="https://exemplo.com/example"
               multiline
               variant="outlined"
@@ -134,7 +144,7 @@ export default function UserCard({
           <FaEdit className={classes.editButton} />
         </IconButton>
 
-        <IconButton>
+        <IconButton onClick={() => handleRemoveCard(index)}>
           <MdDelete className={classes.deleteButton} />
         </IconButton>
 
