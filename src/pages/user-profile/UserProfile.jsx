@@ -29,7 +29,7 @@ function Alert(props) {
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100vh",
-    marginTop: "10vh",
+    marginTop: 80,
   },
   avatar: {
     backgroundColor: "#C4C4C4",
@@ -70,11 +70,12 @@ export default function UserProfile() {
   // GLOBAL VARIABLES
   const classes = useStyles();
   let image = false;
-  const token = window.localStorage.getItem("token") || Cookies.get("token");
+  // const token = window.localStorage.getItem("token") || Cookies.get("token");
 
   // GLOBAL STATES
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const token = useSelector((state) => state.userToken);
   useEffect(() => {
     setWillChangePassword(false);
   }, [user]);

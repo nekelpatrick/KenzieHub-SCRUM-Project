@@ -1,6 +1,7 @@
 import "./App.css";
 
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import Navbar from "./components/navbar/Navbar";
 import Login from "./components/login/Login";
@@ -11,6 +12,8 @@ import UserArea from "./pages/user-area/UserArea";
 import RegisterPage from "./pages/register";
 
 function App() {
+  const token = useSelector((state) => state.userToken);
+  const history = useHistory();
   return (
     <div className="App">
       <nav>
@@ -23,26 +26,38 @@ function App() {
             <Home />
           </Route>
 
-          <Route path="/cadastro">
-            <RegisterPage />
-          </Route>
+          {token ? (
+            <>
+              <Route path="/login">{history.push("/")}</Route>
+              <Route path="/cadastro">{history.push("/")}</Route>
 
-          <Route path="/login">
-            <Login />
-          </Route>
+              <Route path="/usuario">
+                <h1> Área do usuário</h1>
+                <UserArea />
+              </Route>
 
-          <Route path="/usuario">
-            <h1> Área do usuário</h1>
-            <UserArea />
-          </Route>
+              <Route path="/usuarios">
+                <UsersList />
+              </Route>
 
-          <Route path="/usuarios">
-            <UsersList />
-          </Route>
+              <Route path="/meu-perfil">
+                <UserProfile />
+              </Route>
+            </>
+          ) : (
+            <>
+              <Route path="/usuario">{history.push("/")}</Route>
+              <Route path="/usuarios">{history.push("/")}</Route>
+              <Route path="/meu-perfil">{history.push("/")}</Route>
 
-          <Route path="/meu-perfil">
-            <UserProfile />
-          </Route>
+              <Route path="/cadastro">
+                <RegisterPage />
+              </Route>
+              <Route path="/login">
+                <Login />
+              </Route>
+            </>
+          )}
         </Switch>
       </div>
     </div>
