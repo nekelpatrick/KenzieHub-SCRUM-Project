@@ -12,7 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import { useSelector, useDispatch } from "react-redux";
-import { setTokenThunk } from "../../store/modules/token";
+import { setTokenThunk } from "../../store/modules/token/thunk";
 import Cookies from "js-cookie";
 
 const useStyles = makeStyles((theme) => ({
