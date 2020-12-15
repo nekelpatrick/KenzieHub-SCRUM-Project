@@ -11,7 +11,9 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setTokenThunk } from "../../store/modules/token";
+import Cookies from "js-cookie";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,6 +39,13 @@ const Navbar = () => {
   const classes = useStyles();
 
   const token = useSelector((state) => state.userToken);
+  const dispatch = useDispatch();
+
+  const logOut = () => {
+    Cookies.remove("token");
+    window.localStorage.removeItem("token");
+    dispatch(setTokenThunk(""));
+  };
 
   return (
     <div id="navbar" className={classes.root}>
@@ -52,14 +61,10 @@ const Navbar = () => {
             <Link to="/">Home</Link>
           </Button>
 
-          <Button color="inherit">
-            <Link to="/sobre-nos">Sobre nós</Link>
-          </Button>
-
           {token ? (
             <>
-              <Button>
-                <Link to="/">LogOut</Link>
+              <Button onClick={logOut}>
+                <Link to="/">Log Out</Link>
               </Button>
 
               <Button color="inherit">
