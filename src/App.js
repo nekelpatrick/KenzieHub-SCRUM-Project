@@ -3,11 +3,11 @@ import "./App.css";
 import { Switch, Route } from "react-router-dom";
 
 import Navbar from "./components/navbar/Navbar";
-import Login from "./components/login/Login";
+import Login from "./pages/login/Login";
 import Home from "./pages/home/Home.jsx";
 import UsersList from "./pages/users-list/UserList";
 import UserProfile from "./pages/user-profile/UserProfile";
-
+import UserArea from "./pages/user-area/UserArea";
 import RegisterPage from "./pages/register";
 
 function App() {
@@ -23,16 +23,17 @@ function App() {
             <Home />
           </Route>
 
-          <Route path="/login">
-            <Login />
-          </Route>
-
           <Route path="/cadastro">
             <RegisterPage />
           </Route>
 
+          <Route path="/login">
+            <Login />
+          </Route>
+
           <Route path="/usuario">
             <h1> Área do usuário</h1>
+            <UserArea />
           </Route>
 
           <Route path="/usuarios">
