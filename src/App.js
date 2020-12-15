@@ -40,8 +40,12 @@ function App() {
             <UsersList />
           </Route>
 
-          <Route path="/sobre-nos">
-            <h1>Sobre-nós</h1>
+          <Route path="/newJob">
+            <h1>New Job</h1>
+          </Route>
+
+          <Route path="/newTech">
+            <h1>New Tech</h1>
           </Route>
 
           <Route path="/meu-perfil">
