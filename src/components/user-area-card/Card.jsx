@@ -19,7 +19,7 @@ import { ImCheckboxChecked } from "react-icons/im";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: 350,
+    // minWidth: 350,
     marginTop: "10%",
     maxWidth: 400,
   },
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
   textField: {
     "& .MuiInputBase-root": {
-      width: "13.5vw",
+      // width: "13.5vw",
       padding: "20px",
     },
     "& .MuiFormLabel-root": {
