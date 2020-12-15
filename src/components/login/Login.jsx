@@ -96,7 +96,6 @@ export default function SignIn() {
 
   return (
     <Container component="main" maxWidth="xs">
-      {Cookies.get("token") && history.push("/usuários")}
       <CssBaseline />
 
       <div className={classes.paper}>
@@ -170,7 +169,7 @@ export default function SignIn() {
             </Grid>
 
             <Grid item>
-              <Link href="/cadastro" variant="body2">
+              <Link onClick={() => history.push("/cadastro")} variant="body2">
                 {"Não possuí uma conta?"}
               </Link>
             </Grid>
