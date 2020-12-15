@@ -26,9 +26,7 @@ const useStyles = makeStyles((theme) => ({
 const UserArea = () => {
   const classes = useStyles();
 
-  const [inputCards, setInputCards] = useState([
-    { projectName: "", desc: "", url: "" },
-  ]);
+  const [inputCards, setInputCards] = useState([]);
 
   const [selector, setSelector] = useState(0);
 

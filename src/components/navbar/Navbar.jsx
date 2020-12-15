@@ -10,7 +10,8 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
+
+import { IconButton } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,15 +21,20 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     padding: `0.5rem calc((100vw - 1000px) / 2)`,
     // height: "11vh",
+    fontFamily: "Lato",
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
+  buttons: {
+    marginRight: theme.spacing(1),
+    fontFamily: "Lato",
   },
   title: {
     flexGrow: 1,
   },
   colorText: {
     color: "#17C1CB",
+  },
+  logo: {
+    width: " 2vw",
   },
 }));
 
@@ -37,44 +43,53 @@ const Navbar = () => {
 
   return (
     <div id="navbar" className={classes.root}>
-      <AppBar className={classes.appbar} elevation={0} position="fixed">
+      <AppBar
+        className={classes.appbar}
+        elevation={0}
+        position="fixed"
+        color="primary"
+      >
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            <Link to="/">
-              {" "}
-              Kenzie<span className={classes.colorText}>Hub</span>
-            </Link>
+            <IconButton>
+              <img
+                className={classes.logo}
+                src={process.env.PUBLIC_URL + "/assets/img/LOGOKENZIEHUB1.png"}
+                alt=""
+              />
+              <Link to="/">
+                Dev <span className={classes.colorText}>Net</span>
+              </Link>
+            </IconButton>
           </Typography>
 
-          <Button color="inherit">
+          <Typography color="inherit" className={classes.buttons}>
             <Link to="/">Home</Link>
-          </Button>
+          </Typography>
 
-          <Button color="inherit">
+          <Typography className={classes.buttons}>
             <Link to="/login">Login</Link>
-          </Button>
+          </Typography>
 
-          <Button color="inherit">
+          <Typography className={classes.buttons}>
             <Link to="/cadastro">Cadastro</Link>
-          </Button>
+          </Typography>
 
-          <Button color="inherit">
+          <Typography className={classes.buttons}>
             <Link to="/usuario">Área do usuário</Link>
-          </Button>
+          </Typography>
 
-          <Button color="inherit">
+          <Typography className={classes.buttons}>
             <Link to="/usuarios">Usuários</Link>
-          </Button>
+          </Typography>
 
-          <Button color="inherit">
-            <Link to="/sobre-nos">Sobre nós</Link>
-          </Button>
-
-          <IconButton color="inherit">
-            <Link to="/meu-perfil">
-              <BsFillPersonFill />
-            </Link>
-          </IconButton>
+          <Typography className={classes.buttons}>
+            <IconButton color="inherit">
+              <Link to="/meu-perfil">
+                <BsFillPersonFill />
+              </Link>
+            </IconButton>
+          </Typography>
 
           {/*  */}
         </Toolbar>

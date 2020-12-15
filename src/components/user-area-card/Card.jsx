@@ -114,7 +114,7 @@ export default function UserCard({
               onChange={(event) => handleChangeInput(index, event)}
             />
             <TextField
-              name="description"
+              name="desc"
               className={classes.textField}
               disabled={edit}
               id="outlined-multiline-static"
@@ -123,7 +123,7 @@ export default function UserCard({
               multiline
               rows={5}
               variant="outlined"
-              value={inputCard.description}
+              value={inputCard.desc}
               onChange={(event) => handleChangeInput(index, event)}
             />
             <TextField

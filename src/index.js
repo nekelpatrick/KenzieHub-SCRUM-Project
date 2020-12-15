@@ -9,7 +9,17 @@ import store from "./store";
 
 const darkTheme = createMuiTheme({
   palette: {
-    type: "light",
+    primary: {
+      main: "#051C53",
+      dark: "#16264a",
+    },
+    secondary: {
+      light: "#B8A0F1",
+      main: "#002d96",
+      dark: "#16264a",
+      // dark: será calculada com base palette.secondary.main,
+      contrastText: "#F31B4F",
+    },
   },
 });
 

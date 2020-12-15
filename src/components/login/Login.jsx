@@ -33,7 +33,7 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(12),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -85,7 +85,7 @@ export default function SignIn() {
 
   return (
     <Container component="main" maxWidth="xs">
-      {Cookies.get("token") && history.push("/usuarios")}
+      {Cookies.get("token") && history.push("/usuários")}
       <CssBaseline />
 
       <div className={classes.paper}>
