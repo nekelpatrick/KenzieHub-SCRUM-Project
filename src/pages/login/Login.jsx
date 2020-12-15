@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -11,12 +11,15 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import Alert from "@material-ui/lab/Alert";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
+import { setTokenThunk } from "../../store/modules/token/thunk";
 
 function Copyright() {
   return (
@@ -33,7 +36,7 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(10),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -56,6 +59,8 @@ export default function SignIn() {
 
   const history = useHistory();
 
+  const dispatch = useDispatch();
+
   const confirmation = yup.object().shape({
     email: yup.string().required("Campo Obrigatório"),
 
@@ -66,26 +71,32 @@ export default function SignIn() {
     resolver: yupResolver(confirmation),
   });
 
+  const [logged, setLogged] = useState(false);
+
+  const [error, setError] = useState("");
+
   const isRemember = (evt) => {
-    return evt.target.checked;
+    setLogged(evt.target.checked);
   };
 
   const handleForm = (user) => {
     axios
       .post("https://kenziehub.me/sessions", user)
       .then((res) => {
-        isRemember
-          ? Cookies.set("token", res.data.token, { expires: 2 })
+        logged
+          ? Cookies.set("token", res.data.token, { expires: 1 })
           : window.localStorage.setItem("token", res.data.token);
+
+        dispatch(setTokenThunk(res.data.token));
 
         history.push("/usuarios");
       })
-      .catch((err) => console.log(err));
+      .catch((res) => setError(res.response.data.message));
   };
 
   return (
     <Container component="main" maxWidth="xs">
-      {Cookies.get("token") && history.push("/usuários")}
+      {Cookies.get("token") && history.push("/usuarios")}
       <CssBaseline />
 
       <div className={classes.paper}>
@@ -128,12 +139,14 @@ export default function SignIn() {
             inputRef={register}
           />
 
+          {error && <Alert severity="error">{error}</Alert>}
+
           <FormControlLabel
             control={
               <Checkbox
                 value="remember"
                 color="primary"
-                onChange={isRemember}
+                onChange={(evt) => isRemember(evt)}
               />
             }
             label="Mantenha-me conectado"
