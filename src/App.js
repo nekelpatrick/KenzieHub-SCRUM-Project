@@ -7,6 +7,7 @@ import Login from "./components/login/Login";
 import Home from "./pages/home/Home.jsx";
 import UsersList from "./pages/users-list/UserList";
 import UserProfile from "./pages/user-profile/UserProfile";
+import Techs from './components/techs/Techs'
 
 import RegisterPage from "./pages/register";
 
@@ -21,6 +22,7 @@ function App() {
         <Switch>
           <Route exact path="/">
             <Home />
+            <Techs></Techs>
           </Route>
 
           <Route path="/login">
