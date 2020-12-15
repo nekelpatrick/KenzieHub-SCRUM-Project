@@ -91,12 +91,12 @@ export default function SignIn() {
 
         history.push("/usuarios");
       })
-      .catch((res) => setError(res.response.data.message));
+      .catch((err) => setError(err.response.data.message));
   };
 
   return (
     <Container component="main" maxWidth="xs">
-      {Cookies.get("token") && history.push("/usuarios")}
+      {Cookies.get("token") && history.push("/usuários")}
       <CssBaseline />
 
       <div className={classes.paper}>

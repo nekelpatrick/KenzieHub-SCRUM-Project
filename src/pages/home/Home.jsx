@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 // import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
-import { Collapse } from "@material-ui/core";
+import { Collapse, Typography, Container } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,11 +20,12 @@ const useStyles = makeStyles((theme) => ({
   title: {
     textAlignt: "center",
     paddingTop: "20vh",
-    color: "#2170EA",
+    color: "#f6fafb",
     fontSize: "4rem",
+    fontFamily: "Open Sans",
   },
   colorText: {
-    color: "#17C1CB",
+    color: "#003cc9",
   },
   goDown: {
     color: "#3af588",
@@ -34,6 +35,10 @@ const useStyles = makeStyles((theme) => ({
     color: "#fff",
     width: "30vw",
     textAlign: "center",
+    marginTop: "2%",
+  },
+  logo: {
+    width: "10vw",
   },
 }));
 
@@ -53,16 +58,27 @@ const Home = () => {
         {...(checked ? { timeout: 1500 } : {})}
         collapsedHeight={50}
       >
-        <h1 className={classes.title}>
-          Kenzie<span className={classes.colorText}>Hub</span>
-        </h1>
+        <Typography>
+          <h1 className={classes.title}>
+            Dev <span className={classes.colorText}>Net</span>
+          </h1>
+        </Typography>
       </Collapse>
+      <Container elevation={3}>
+        <img
+          className={classes.logo}
+          src={process.env.PUBLIC_URL + "/assets/img/LOGOKENZIEHUB1.png"}
+          alt=""
+        />
+      </Container>
 
-      <h3 className={classes.desc}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl
-        eros, pulvinar facilisis justo mollis, auctor consequat urna. Morbi a
-        bibendum metus.
-      </h3>
+      <Typography>
+        <h3 className={classes.desc}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl
+          eros, pulvinar facilisis justo mollis, auctor consequat urna. Morbi a
+          bibendum metus.
+        </h3>
+      </Typography>
     </div>
   );
 };

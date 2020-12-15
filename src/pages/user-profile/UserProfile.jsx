@@ -329,7 +329,6 @@ export default function UserProfile() {
               <Button
                 onClick={() => setWillChangePassword(!willChangePassword)}
                 variant="contained"
-                color="secondary"
                 style={{ marginBottom: "30px" }}
               >
                 {willChangePassword ? "MANTER SENHA" : "ALTERAR SENHA"}

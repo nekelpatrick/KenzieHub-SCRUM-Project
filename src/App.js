@@ -3,7 +3,7 @@ import "./App.css";
 import { Switch, Route } from "react-router-dom";
 
 import Navbar from "./components/navbar/Navbar";
-import Login from "./pages/login/Login";
+import Login from "./components/login/Login";
 import Home from "./pages/home/Home.jsx";
 import UsersList from "./pages/users-list/UserList";
 import UserProfile from "./pages/user-profile/UserProfile";
@@ -40,12 +40,7 @@ function App() {
             <UsersList />
           </Route>
 
-          <Route path="/sobre-nos">
-            <h1>Sobre-nós</h1>
-          </Route>
-
           <Route path="/meu-perfil">
-            <h1>Meu perfil</h1>
             <UserProfile />
           </Route>
         </Switch>

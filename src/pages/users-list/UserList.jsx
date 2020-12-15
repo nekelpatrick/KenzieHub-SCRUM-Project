@@ -13,9 +13,13 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     justifyContent: "center",
+
     "& > *": {
       margin: theme.spacing(2),
     },
+  },
+  userslistContainer: {
+    marginTop: 80,
   },
 }));
 
@@ -40,7 +44,7 @@ export default function UsersList() {
   };
 
   return (
-    <div className="users-list-container">
+    <div className={classes.userslistContainer}>
       {error ? (
         <p>Ocorreu algum erro</p>
       ) : (
