@@ -91,7 +91,7 @@ export default function SignIn() {
 
         history.push("/usuarios");
       })
-      .catch((res) => setError(res.response.data.message));
+      .catch((err) => setError(err.response.data.message));
   };
 
   return (
