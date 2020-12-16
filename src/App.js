@@ -8,7 +8,8 @@ import Login from "./components/login/Login";
 import Home from "./pages/home/Home.jsx";
 import UsersList from "./pages/users-list/UserList";
 import UserProfile from "./pages/user-profile/UserProfile";
-import UserArea from "./pages/user-area/UserArea";
+import Techs from './components/techs/Techs'
+
 import RegisterPage from "./pages/register";
 import JobsForm from "./pages/new-job";
 
@@ -25,6 +26,7 @@ function App() {
         <Switch>
           <Route exact path="/">
             <Home />
+            <Techs></Techs>
           </Route>
 
           {token ? (
@@ -37,9 +39,15 @@ function App() {
                 <UserArea />
               </Route>
 
+<<<<<<< src/App.js
+          <Route path="/usuario">
+            <UserArea />
+          </Route>
+=======
               <Route path="/usuarios">
                 <UsersList />
               </Route>
+>>>>>>> src/App.js
 
               <Route path="/meu-perfil">
                 <UserProfile />
