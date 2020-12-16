@@ -74,7 +74,7 @@ const UserArea = () => {
             className={classes.submit}
             onClick={() => history.push("/newjob")}
           >
-            Adicione nova tecnologia
+            Adicione novo trabalho
           </Button>
         </>
       ) : (
