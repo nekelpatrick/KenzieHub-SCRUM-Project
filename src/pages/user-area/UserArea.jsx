@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getUserThunk } from '../../store/modules/user/thunk'
  
 import UserCard from "../../components/user-area-card/Card";
+import TechCard from "../../components/tech-card/TechCard";
 import Button from "@material-ui/core/Button";
 
 import { Grid, Paper, Tabs, Tab } from "@material-ui/core";
@@ -31,6 +32,8 @@ const UserArea = () => {
   const classes = useStyles();
 
   const [inputCards, setInputCards] = useState([]);
+  const [inputTechCards, setInputTechCards] = useState([]);
+
   const [selector, setSelector] = useState(0);
 
   
@@ -92,16 +95,17 @@ const UserArea = () => {
       ) : (
         <>
           <Grid className={classes.root} container spacing={1}>
-            {user.techs.map((inputCard, index) => (
+            {user.techs && user.techs.map((inputTechCard, index) => (
               <Grid key={index} item xs={12} sm={6} md={4}>
-                <UserCard
-                  inputCards={inputCards}
-                  setInputCards={setInputCards}
+                <TechCard
+                  inputTechCards={inputTechCards}
+                  setInputTechCards={setInputTechCards}
                   index={index}
-                  inputCard={inputCard}
+                  inputTechCard={inputTechCard}
                 />
               </Grid>
-            ))}
+            )
+            )}
           </Grid>
           <Button
             type="submit"
