@@ -96,10 +96,6 @@ export default function SignIn() {
 
   return (
     <Container component="main" maxWidth="xs">
-<<<<<<< HEAD
-      {Cookies.get("token") && history.push("/usuarios")}
-=======
->>>>>>> 75dbd1e23d39c1c0e4171f7186ac44ccc6fcc7a7
       <CssBaseline />
 
       <div className={classes.paper}>
