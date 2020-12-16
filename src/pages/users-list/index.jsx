@@ -28,7 +28,6 @@ export default function UsersList() {
   const [page, setPage] = useState(1);
   const [url, setUrl] = useState("https://kenziehub.me/users?perPage=15&page=");
   useEffect(() => {
-    console.log(url + page);
     dispatch(getUsersThunk(url + page, setError));
     scroll.scrollToTop();
   }, [page, url]);
@@ -37,9 +36,11 @@ export default function UsersList() {
 
   const handleClick = (evt, value) => {
     // VERIFIES IF THERE IS CONTENT IN THE NEXT PAGE
-    axios.get(url + value).then((res) => {
-      res.data.length && setPage(value);
-    });
+    axios
+      .get("https://kenziehub.me/users?perPage=15&page=" + value)
+      .then((res) => {
+        res.data.length && setPage(value);
+      });
   };
 
   return (
@@ -48,7 +49,7 @@ export default function UsersList() {
         <p>Ocorreu algum erro</p>
       ) : (
         <>
-          <FilterInput setUrl={setUrl} page={page} />
+          <FilterInput setUrl={setUrl} />
           {usersList.map((user, index) => {
             return <UserCard user={user} key={index} />;
           })}

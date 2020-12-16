@@ -1,7 +1,3 @@
-import { getUsersThunk } from "../../store/modules/users-list/thunk";
-import { useDispatch } from "react-redux";
-import axios from "axios";
-
 import { TextField, Button } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -31,9 +27,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function FilterInput({ setUrl, page }) {
+export default function FilterInput({ setUrl }) {
   const classes = useStyles();
-  const dispatch = useDispatch();
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -45,14 +40,6 @@ export default function FilterInput({ setUrl, page }) {
             "&page="
         )
       : setUrl("https://kenziehub.me/users?perPage=15&page=");
-
-    axios
-      .get(
-        "https://kenziehub.me/users?perPage=15&tech=" +
-          evt.target[0].value +
-          "&page="
-      )
-      .then((res) => console.log(res));
   };
 
   return (
