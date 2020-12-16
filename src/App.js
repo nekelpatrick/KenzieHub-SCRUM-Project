@@ -1,29 +1,78 @@
-import logo from "./logo.svg";
 import "./App.css";
-import {} from "yup";
-import {} from "react-hook-form";
-import {} from "react-router-dom";
-import {} from "@material-ui/core";
-import {} from "redux-thunk";
-import {} from "react-redux";
+
+import { Switch, Route, useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+import Navbar from "./components/navbar/Navbar";
+import Login from "./components/login/Login";
+import Home from "./pages/home/Home.jsx";
+import UsersList from "./pages/users-list/UserList";
+import UserProfile from "./pages/user-profile/UserProfile";
+import UserArea from "./pages/user-area/UserArea";
+import Techs from "./components/techs/Techs";
+
+import RegisterPage from "./pages/register";
+import JobsForm from "./pages/new-job";
 
 function App() {
+  const token = useSelector((state) => state.userToken);
+  const history = useHistory();
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <nav>
+        <Navbar />
+      </nav>
+
+      <div className="body">
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+
+          {token ? (
+            <>
+              <Route path="/login">{history.push("/")}</Route>
+              <Route path="/cadastro">{history.push("/")}</Route>
+
+              <Route path="/usuario">
+                <h1> Área do usuário</h1>
+                <UserArea />
+              </Route>
+
+              <Route path="/usuarios">
+                <UsersList />
+              </Route>
+
+              <Route path="/meu-perfil">
+                <UserProfile />
+              </Route>
+
+              <Route path="/newjob">
+                <JobsForm />
+              </Route>
+
+              <Route path="/newtech">
+                <Techs></Techs>
+              </Route>
+            </>
+          ) : (
+            <>
+              <Route path="/usuario">{history.push("/")}</Route>
+              <Route path="/usuarios">{history.push("/")}</Route>
+              <Route path="/meu-perfil">{history.push("/")}</Route>
+              <Route path="/newjob">{history.push("/")}</Route>
+              <Route path="/newtech">{history.push("/")}</Route>
+
+              <Route path="/cadastro">
+                <RegisterPage />
+              </Route>
+              <Route path="/login">
+                <Login />
+              </Route>
+            </>
+          )}
+        </Switch>
+      </div>
     </div>
   );
 }
