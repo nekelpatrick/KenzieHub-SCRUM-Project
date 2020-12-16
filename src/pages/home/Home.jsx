@@ -2,7 +2,7 @@ import React from "react";
 // import { RiArrowDownSLine } from "react-icons/ri";
 
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 // import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
@@ -53,6 +53,17 @@ const useStyles = makeStyles((theme) => ({
       marginTop: "8%",
     },
   },
+  text: {
+    color: "#fff",
+    width: "30vw",
+    textAlign: "left",
+    marginTop: "4%",
+    ["@media (max-width:700px)"]: {
+      fontSize: "16px",
+      width: "60vw",
+      marginTop: "10%",
+    },
+  },
   logo: {
     width: "10vw",
   },
@@ -68,6 +79,8 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
     padding: "20px",
     position: "relative",
+    display: "flex",
+    alignItems: "center",
   },
 
   button: {
@@ -87,16 +100,9 @@ const useStyles = makeStyles((theme) => ({
   },
 
   arrow: {
-    width: "10vw",
-    height: "10vh",
-    color: "rgb(235, 237, 238)",
-    padding: "10px",
+    fontSize: 45,
+    color: "rgb(255, 255, 255)",
     transition: "1000ms ease-in-out",
-    textShadow: "10px 10px 10px 10px blue",
-
-    "&:hover": {
-      color: "rgb(84, 206, 236)",
-    },
     ["@media (max-width:700px)"]: { width: "45vw", height: "11vh" },
   },
 
@@ -109,6 +115,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = () => {
   const classes = useStyles();
+  const history = useHistory();
 
   const [checked, setChecked] = useState(false);
 
@@ -138,11 +145,17 @@ const Home = () => {
       </Container>
 
       <Typography>
-        <h3 className={classes.desc}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl
-          eros, pulvinar facilisis justo mollis, auctor consequat urna. Morbi a
-          bibendum metus.
-        </h3>
+        <h1 className={classes.desc}>
+          Conheca os devs da Kenzie e suas competências.
+        </h1>
+        <p className={classes.text}>
+          Na dev net você consegue acessar uma série perfils de desenvolvedores
+          que estudam na Kenzie Academy Brasil, descubrir quais tecnologias eles
+          já conhecem e até acessar projetos feitos por eles. Além disso você
+          podera fazer o mesmo! Aqui você consiguirá compartilhar as tecnologias
+          que você conhece e os trabalhos que você já fez com uma comunidade
+          super ativa muito interessada em ver o que você tem para mostrar!
+        </p>
       </Typography>
 
       {/* <Box className={classes.gotoBox}>
@@ -152,7 +165,17 @@ const Home = () => {
         </Link>
       </Box> */}
 
-      <Link to="/cadastro" className={classes.goto}>
+      <Typography
+        className={classes.goto}
+        onClick={() => history.push("/cadastro")}
+      >
+        <Typography className={classes.texto} variant="button">
+          <span>Cadastre-se</span>
+        </Typography>
+        <RiArrowRightSLine className={classes.arrow} />
+      </Typography>
+
+      {/* <Link to="/cadastro" className={classes.goto}>
         <Button variant="outlined" color="primary" className={classes.button}>
           <IconButton className={classes.IconButton}>
             <RiArrowRightSLine className={classes.arrow} />
@@ -161,7 +184,7 @@ const Home = () => {
             <span>Cadastre-se</span>
           </Typography>
         </Button>
-      </Link>
+      </Link> */}
     </div>
   );
 };
