@@ -24,7 +24,7 @@ export default function OutlinedCard({ inputCards, setInputCards }) {
 
   console.log(inputCards);
   const handleAddCard = () => {
-    setInputCards([...inputCards, { projectName: "", desc: "", url: "" }]);
+    setInputCards([...inputCards, { title: "", desc: "", url: "" }]);
   };
 
   return (

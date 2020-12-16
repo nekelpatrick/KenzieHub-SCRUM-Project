@@ -19,7 +19,7 @@ import { ImCheckboxChecked } from "react-icons/im";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: 350,
+    // minWidth: 350,
     marginTop: "10%",
     maxWidth: 400,
   },
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
   textField: {
     "& .MuiInputBase-root": {
-      width: "13.5vw",
+      // width: "13.5vw",
       padding: "20px",
     },
     "& .MuiFormLabel-root": {
@@ -114,7 +114,7 @@ export default function UserCard({
               onChange={(event) => handleChangeInput(index, event)}
             />
             <TextField
-              name="description"
+              name="desc"
               className={classes.textField}
               disabled={edit}
               id="outlined-multiline-static"
@@ -123,7 +123,7 @@ export default function UserCard({
               multiline
               rows={5}
               variant="outlined"
-              value={inputCard.description}
+              value={inputCard.desc}
               onChange={(event) => handleChangeInput(index, event)}
             />
             <TextField
