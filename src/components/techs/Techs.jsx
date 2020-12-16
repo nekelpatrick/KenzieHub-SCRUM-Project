@@ -8,7 +8,7 @@ import Container from "@material-ui/core/Container";
 
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import Cookies from "js-cookie";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -32,7 +32,7 @@ const TechsForm = () => {
   const { register, handleSubmit } = useForm();
   const [ error, setError ] = useState({})
 
-  const token = Cookies.get("token");
+  const token = useSelector((state) => (state.userToken))
 
   const handleForm = (data) => {
     axios

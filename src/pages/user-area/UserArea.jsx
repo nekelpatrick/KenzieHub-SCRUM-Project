@@ -1,8 +1,11 @@
 import React from "react";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
+import { getUserThunk } from '../../store/modules/user/thunk'
+ 
 import UserCard from "../../components/user-area-card/Card";
 import Button from "@material-ui/core/Button";
 
@@ -28,8 +31,17 @@ const UserArea = () => {
   const classes = useStyles();
 
   const [inputCards, setInputCards] = useState([]);
-
   const [selector, setSelector] = useState(0);
+
+  
+  const token = useSelector((state) => (state.userToken))
+  const user = useSelector((state) => state.user)
+  
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUserThunk(token));
+  }, []);
 
   const history = useHistory();
 
@@ -78,7 +90,30 @@ const UserArea = () => {
           </Button>
         </>
       ) : (
-        <h1>Techs</h1>
+        <>
+          <Grid className={classes.root} container spacing={1}>
+            {user.techs.map((inputCard, index) => (
+              <Grid key={index} item xs={12} sm={6} md={4}>
+                <UserCard
+                  inputCards={inputCards}
+                  setInputCards={setInputCards}
+                  index={index}
+                  inputCard={inputCard}
+                />
+              </Grid>
+            ))}
+          </Grid>
+          <Button
+            type="submit"
+            size="medium"
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            onClick={() => history.push("/newtech")}
+          >
+            Adicione nova tecnologia
+          </Button>
+        </>
       )}
     </div>
   );
