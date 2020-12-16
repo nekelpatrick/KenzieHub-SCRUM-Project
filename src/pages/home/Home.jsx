@@ -25,6 +25,8 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    // ["@media (min-height:600px)"]: { marginTop: "-25%" },
+    ["@media (max-width:700px)"]: { marginTop: "-28%" },
   },
   title: {
     textAlignt: "center",
@@ -45,6 +47,11 @@ const useStyles = makeStyles((theme) => ({
     width: "30vw",
     textAlign: "center",
     marginTop: "2%",
+    ["@media (max-width:700px)"]: {
+      fontSize: "16px",
+      width: "60vw",
+      marginTop: "8%",
+    },
   },
   logo: {
     width: "10vw",
@@ -73,6 +80,7 @@ const useStyles = makeStyles((theme) => ({
       alignItems: "center",
       justifyContent: "center",
     },
+    ["@media (max-width:700px)"]: { marginTop: "5%" },
   },
   IconButton: {
     borderRadius: "6%",
@@ -89,6 +97,7 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: "rgb(84, 206, 236)",
     },
+    ["@media (max-width:700px)"]: { width: "45vw", height: "11vh" },
   },
 
   texto: {
