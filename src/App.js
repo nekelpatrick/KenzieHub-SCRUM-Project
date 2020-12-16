@@ -8,7 +8,8 @@ import Login from "./components/login/Login";
 import Home from "./pages/home/Home.jsx";
 import UsersList from "./pages/users-list/UserList";
 import UserProfile from "./pages/user-profile/UserProfile";
-import Techs from './components/techs/Techs'
+import UserArea from "./pages/user-area/UserArea";
+import Techs from "./components/techs/Techs";
 
 import RegisterPage from "./pages/register";
 import JobsForm from "./pages/new-job";
@@ -26,7 +27,6 @@ function App() {
         <Switch>
           <Route exact path="/">
             <Home />
-            <Techs></Techs>
           </Route>
 
           {token ? (
@@ -39,15 +39,9 @@ function App() {
                 <UserArea />
               </Route>
 
-<<<<<<< src/App.js
-          <Route path="/usuario">
-            <UserArea />
-          </Route>
-=======
               <Route path="/usuarios">
                 <UsersList />
               </Route>
->>>>>>> src/App.js
 
               <Route path="/meu-perfil">
                 <UserProfile />
@@ -56,6 +50,10 @@ function App() {
               <Route path="/newjob">
                 <JobsForm />
               </Route>
+
+              <Route path="/newtech">
+                <Techs></Techs>
+              </Route>
             </>
           ) : (
             <>
@@ -63,6 +61,7 @@ function App() {
               <Route path="/usuarios">{history.push("/")}</Route>
               <Route path="/meu-perfil">{history.push("/")}</Route>
               <Route path="/newjob">{history.push("/")}</Route>
+              <Route path="/newtech">{history.push("/")}</Route>
 
               <Route path="/cadastro">
                 <RegisterPage />

@@ -78,7 +78,30 @@ const UserArea = () => {
           </Button>
         </>
       ) : (
-        <h1>Techs</h1>
+        <>
+          <Grid className={classes.root} container spacing={1}>
+            {inputCards.map((inputCard, index) => (
+              <Grid key={index} item xs={12} sm={6} md={4}>
+                <UserCard
+                  inputCards={inputCards}
+                  setInputCards={setInputCards}
+                  index={index}
+                  inputCard={inputCard}
+                />
+              </Grid>
+            ))}
+          </Grid>
+          <Button
+            type="submit"
+            size="medium"
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            onClick={() => history.push("/newtech")}
+          >
+            Adicione nova tecnologia
+          </Button>
+        </>
       )}
     </div>
   );
