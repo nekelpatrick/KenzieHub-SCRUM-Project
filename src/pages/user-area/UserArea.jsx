@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import { getUserThunk } from '../../store/modules/user/thunk'
- 
+import { getUserThunk } from "../../store/modules/user/thunk";
+
 import UserCard from "../../components/user-area-card/Card";
 import Button from "@material-ui/core/Button";
 
@@ -33,10 +33,9 @@ const UserArea = () => {
   const [inputCards, setInputCards] = useState([]);
   const [selector, setSelector] = useState(0);
 
-  
-  const token = useSelector((state) => (state.userToken))
-  const user = useSelector((state) => state.user)
-  
+  const token = useSelector((state) => state.userToken);
+  const user = useSelector((state) => state.user);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
