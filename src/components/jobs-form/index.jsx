@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   form: {
-    width: "90%", 
+    width: "90%", // Fix IE 11 issue.
     marginTop: theme.spacing(3),
   },
   submit: {
@@ -26,21 +26,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TechsForm = () => {
+const JobsForm = () => {
   const classes = useStyles();
 
   const { register, handleSubmit } = useForm();
-  const [ error, setError ] = useState({})
 
   const token = Cookies.get("token");
 
   const handleForm = (data) => {
     axios
-      .post("https://kenziehub.me/users/techs", data, {
+      .post("https://kenziehub.me/users/works", data, {
         headers: { Authorization: `Bearer ${token}` },
       })
-      .then((res) => console.log(res))
-      .catch((err) => {setError(err); console.log(err)})
+      .then((res) => console.log(res));
   };
 
   return (
@@ -68,12 +66,25 @@ const TechsForm = () => {
 
             <Grid item xs={12}>
               <TextField
-                name="status"
-                id="status"
+                name="description"
+                id="description"
                 autoComplete="description"
                 variant="outlined"
                 required
-                label="Seu nivel nesta tech"
+                label="Descrição do trabalho"
+                fullWidth
+                inputRef={register}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                name="deploy_url"
+                id="deploy_urls"
+                autoComplete="deploy_url"
+                variant="outlined"
+                required
+                label="URL de entrega"
                 fullWidth
                 inputRef={register}
               />
@@ -95,4 +106,4 @@ const TechsForm = () => {
   );
 };
 
-export default TechsForm;
+export default JobsForm;
