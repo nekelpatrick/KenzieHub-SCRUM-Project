@@ -3,7 +3,6 @@ import thunk from "redux-thunk";
 
 import usersListReducer from "./modules/users-list/reducer";
 import userReducer from "./modules/user/reducer";
-import techsReducer from './modules/techs/reducer'
 
 const reducers = combineReducers({
   userList: usersListReducer,
