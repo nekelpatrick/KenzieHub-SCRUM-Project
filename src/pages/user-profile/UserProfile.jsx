@@ -29,7 +29,7 @@ function Alert(props) {
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100vh",
-    marginTop: "10vh",
+    marginTop: 80,
   },
   avatar: {
     backgroundColor: "#C4C4C4",
@@ -70,10 +70,12 @@ export default function UserProfile() {
   // GLOBAL VARIABLES
   const classes = useStyles();
   let image = false;
+  // const token = window.localStorage.getItem("token") || Cookies.get("token");
 
   // GLOBAL STATES
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const token = useSelector((state) => state.userToken);
   useEffect(() => {
     setWillChangePassword(false);
   }, [user]);
@@ -84,7 +86,7 @@ export default function UserProfile() {
   const [course_module, setCourse_madule] = useState("");
   const [open, setOpen] = useState(false);
   useEffect(() => {
-    dispatch(getUserThunk(Cookies.get("token") || ""));
+    dispatch(getUserThunk(token));
   }, []);
 
   // VALIDATION WITH YUP
@@ -160,7 +162,7 @@ export default function UserProfile() {
   const handleForm = (data) => {
     data.course_module = course_module;
     data.image = image;
-    dispatch(updateUserThunk(data, Cookies.get("token"), setUpdateMessage));
+    dispatch(updateUserThunk(data, token, setUpdateMessage));
     setOpen(true);
   };
 
@@ -328,7 +330,6 @@ export default function UserProfile() {
               <Button
                 onClick={() => setWillChangePassword(!willChangePassword)}
                 variant="contained"
-                color="secondary"
                 style={{ marginBottom: "30px" }}
               >
                 {willChangePassword ? "MANTER SENHA" : "ALTERAR SENHA"}
