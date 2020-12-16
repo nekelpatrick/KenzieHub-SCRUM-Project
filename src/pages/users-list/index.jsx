@@ -26,16 +26,18 @@ export default function UsersList() {
 
   const [error, setError] = useState(false);
   const [page, setPage] = useState(1);
+  const [url, setUrl] = useState("https://kenziehub.me/users?perPage=15&page=");
   useEffect(() => {
-    dispatch(getUsersThunk(page, setError));
+    console.log(url + page);
+    dispatch(getUsersThunk(url + page, setError));
     scroll.scrollToTop();
-  }, [page]);
+  }, [page, url]);
 
   const usersList = useSelector((state) => state.userList);
 
   const handleClick = (evt, value) => {
     // VERIFIES IF THERE IS CONTENT IN THE NEXT PAGE
-    axios.get("https://kenziehub.me/users?page=" + value).then((res) => {
+    axios.get(url + value).then((res) => {
       res.data.length && setPage(value);
     });
   };
@@ -46,7 +48,7 @@ export default function UsersList() {
         <p>Ocorreu algum erro</p>
       ) : (
         <>
-          <FilterInput />
+          <FilterInput setUrl={setUrl} page={page} />
           {usersList.map((user, index) => {
             return <UserCard user={user} key={index} />;
           })}
