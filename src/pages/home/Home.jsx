@@ -2,10 +2,19 @@ import React from "react";
 // import { RiArrowDownSLine } from "react-icons/ri";
 
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 // import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
-import { Collapse, Typography, Container } from "@material-ui/core";
+import {
+  Collapse,
+  Typography,
+  Container,
+  Button,
+  IconButton,
+  Box,
+} from "@material-ui/core";
+import { RiArrowRightSLine } from "react-icons/ri";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     textAlignt: "center",
-    paddingTop: "20vh",
+    paddingTop: "16vh",
     color: "#f6fafb",
     fontSize: "4rem",
     fontFamily: "Open Sans",
@@ -39,6 +48,53 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     width: "10vw",
+  },
+
+  // gotoBox: {
+  //   marginTop: "0vh",
+  // },
+
+  border: "solid 1px",
+  goto: {
+    color: "rgb(8, 41, 133)",
+    height: "16",
+    textDecoration: "none",
+    padding: "20px",
+    position: "relative",
+  },
+
+  button: {
+    backgroundColor: "rgba(17, 104, 148, 0.075)",
+    marginTop: "50%",
+
+    "& .MuiButton-label": {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+  },
+  IconButton: {
+    borderRadius: "6%",
+  },
+
+  arrow: {
+    width: "10vw",
+    height: "10vh",
+    color: "rgb(235, 237, 238)",
+    padding: "10px",
+    transition: "1000ms ease-in-out",
+    textShadow: "10px 10px 10px 10px blue",
+
+    "&:hover": {
+      color: "rgb(84, 206, 236)",
+    },
+  },
+
+  texto: {
+    fontWeight: "bold",
+    color: "white",
+    fontSize: "30px",
   },
 }));
 
@@ -79,6 +135,24 @@ const Home = () => {
           bibendum metus.
         </h3>
       </Typography>
+
+      {/* <Box className={classes.gotoBox}>
+        <Link className={classes.goto} to="/cadastro">
+          <span className={classes.linker}>Cadastre-se</span>
+          <HiOutlineArrowNarrowRight className={classes.arrow} />
+        </Link>
+      </Box> */}
+
+      <Link to="/cadastro" className={classes.goto}>
+        <Button variant="outlined" color="primary" className={classes.button}>
+          <IconButton className={classes.IconButton}>
+            <RiArrowRightSLine className={classes.arrow} />
+          </IconButton>
+          <Typography className={classes.texto} variant="button">
+            <span>Cadastre-se</span>
+          </Typography>
+        </Button>
+      </Link>
     </div>
   );
 };
