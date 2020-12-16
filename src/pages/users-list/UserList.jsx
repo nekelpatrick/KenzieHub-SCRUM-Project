@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { getUsersThunk } from "../../store/modules/users-list/thunk";
 import { useDispatch, useSelector } from "react-redux";
+import { animateScroll as scroll } from "react-scroll";
 
 import "./style.css";
 import { makeStyles } from "@material-ui/core/styles";
@@ -12,9 +13,13 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     justifyContent: "center",
+
     "& > *": {
       margin: theme.spacing(2),
     },
+  },
+  userslistContainer: {
+    marginTop: 80,
   },
 }));
 
@@ -24,18 +29,22 @@ export default function UsersList() {
 
   const [error, setError] = useState(false);
   const [page, setPage] = useState(1);
-  useEffect(() => dispatch(getUsersThunk(page, setError)), [page]);
+  useEffect(() => {
+    dispatch(getUsersThunk(page, setError));
+    scroll.scrollToTop();
+  }, [page]);
 
   const usersList = useSelector((state) => state.userList);
 
   const handleClick = (evt, value) => {
+    // VERIFIES IF THERE IS CONTENT IN THE NEXT PAGE
     axios.get("https://kenziehub.me/users?page=" + value).then((res) => {
       res.data.length && setPage(value);
     });
   };
 
   return (
-    <div className="users-list-container">
+    <div className={classes.userslistContainer}>
       {error ? (
         <p>Ocorreu algum erro</p>
       ) : (
