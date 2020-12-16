@@ -7,7 +7,7 @@ import { animateScroll as scroll } from "react-scroll";
 import "./style.css";
 import { makeStyles } from "@material-ui/core/styles";
 import Pagination from "@material-ui/lab/Pagination";
-import UserCard from "../../components/user-card";
+import UserCard from "../../components/user-card/UserCard";
 import FilterInput from "../../components/filter-input/FilterInput";
 
 const useStyles = makeStyles((theme) => ({
