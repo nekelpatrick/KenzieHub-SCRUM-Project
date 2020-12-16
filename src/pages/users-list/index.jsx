@@ -8,6 +8,7 @@ import "./style.css";
 import { makeStyles } from "@material-ui/core/styles";
 import Pagination from "@material-ui/lab/Pagination";
 import UserCard from "../../components/user-card";
+import FilterInput from "../../components/filter-input/FilterInput";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,20 +45,23 @@ export default function UsersList() {
       {error ? (
         <p>Ocorreu algum erro</p>
       ) : (
-        usersList.map((user, index) => {
-          return <UserCard user={user} key={index} />;
-        })
+        <>
+          <FilterInput />
+          {usersList.map((user, index) => {
+            return <UserCard user={user} key={index} />;
+          })}
+          <div className={classes.root}>
+            <Pagination
+              page={page}
+              onChange={handleClick}
+              siblingCount={-1}
+              count={page + 1}
+              variant="outlined"
+              shape="rounded"
+            />
+          </div>
+        </>
       )}
-      <div className={classes.root}>
-        <Pagination
-          page={page}
-          onChange={handleClick}
-          siblingCount={-1}
-          count={page + 1}
-          variant="outlined"
-          shape="rounded"
-        />
-      </div>
     </div>
   );
 }
