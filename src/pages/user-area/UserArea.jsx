@@ -94,11 +94,11 @@ const UserArea = () => {
       ) : (
         <>
           <Grid className={classes.root} container spacing={1}>
-            {inputCards.map((inputCard, index) => (
+            {jobsCards.map((inputCard, index) => (
               <Grid key={index} item xs={12} sm={6} md={4}>
                 <UserCard
-                  inputCards={inputCards}
-                  setInputCards={setInputCards}
+                  inputCards={jobsCards}
+                  setInputCards={setJobsCards}
                   index={index}
                   inputCard={inputCard}
                 />
