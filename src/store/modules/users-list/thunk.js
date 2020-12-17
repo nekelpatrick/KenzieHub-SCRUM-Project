@@ -1,9 +1,9 @@
 import axios from "axios";
 import { getUserList } from "./actions";
 
-export const getUsersThunk = (pageNumber, setError) => (dispatch, getState) => {
+export const getUsersThunk = (url, setError) => (dispatch, getState) => {
   axios
-    .get("https://kenziehub.me/users?perPage=15&page=" + pageNumber)
+    .get(url)
     .then((res) => {
       dispatch(getUserList(res.data));
     })
