@@ -74,7 +74,7 @@ export default function UserCard({
     setEdit(false);
   };
 
-  const disableEdit = (data, value) => {
+  const disableEdit = () => {
     setEdit(true);
 
     axios.put(`https://kenziehub.me/users/works/${inputCard.id}`, inputCard, {
