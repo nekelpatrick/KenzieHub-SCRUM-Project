@@ -42,7 +42,7 @@ export const updateUserThunk = (
         dispatch(updateUser(res.data));
         setUpdateMessage("Dados atualizados!");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => setUpdateMessage("Imagem inválida."));
   }
   if (userUpdateData.old_password && userUpdateData.password) {
     axios

@@ -18,8 +18,6 @@ import axios from "axios";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { ImCheckboxChecked } from "react-icons/im";
-import Fade from "@material-ui/core/Fade";
-import Popper from "@material-ui/core/Popper";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,35 +57,14 @@ const useStyles = makeStyles((theme) => ({
     padding: "1px",
     justifyContent: "center",
   },
-  popup: {
-    padding: theme.spacing(1),
-    boxShadow:
-      "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
-    backgroundColor: "#424242",
-    color: "#fff",
-  },
-  cancel: {
-    margin: theme.spacing(2, 0, 1),
-    color: "#f48fb1",
-    "& :hover": {
-      backgroundColor: "red",
-      color: "#fff",
-    },
-  },
 }));
 
 export default function TechCard({ tech, setTechs, prevTechs }) {
   const classes = useStyles();
-
   const token = useSelector((state) => state.userToken);
 
   const [edit, setEdit] = useState(true);
   const [techLevel, setTechLevel] = useState(tech.status);
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const open = Boolean(anchorEl);
-  const id = open ? "transitions-popper" : undefined;
 
   const handleUpdate = () => {
     setEdit(true);
@@ -105,23 +82,19 @@ export default function TechCard({ tech, setTechs, prevTechs }) {
       .catch((err) => console.log(err));
   };
 
-  const handleRemoveCard = (event) => {
-    setAnchorEl(anchorEl ? null : event.currentTarget);
-  };
-
-  const confirmedRemoveCard = () => {
+  const handleRemoveCard = () => {
+    const newTechs = prevTechs.filter((el) => {
+      return el.title !== tech.title;
+    });
+    setTechs(newTechs);
     axios
       .delete("https://kenziehub.me/users/techs/" + tech.id, {
         headers: {
           Authorization: "Bearer " + token,
         },
       })
-      .then(() => {
-        const newTechs = prevTechs.filter((el) => {
-          return el.title !== tech.title;
-        });
-        setTechs(newTechs);
-      });
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
 
   const status = [
@@ -187,41 +160,8 @@ export default function TechCard({ tech, setTechs, prevTechs }) {
           <FaEdit className={classes.editButton} />
         </IconButton>
 
-        <IconButton onClick={(event) => handleRemoveCard(event)}>
+        <IconButton onClick={() => handleRemoveCard()}>
           <MdDelete className={classes.deleteButton} />
-          <Popper
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            transition
-            placement="bottom"
-            disablePortal={false}
-            modifiers={{
-              flip: {
-                enabled: false,
-              },
-              preventOverflow: {
-                enabled: false,
-              },
-            }}
-          >
-            {({ TransitionProps }) => (
-              <Fade {...TransitionProps}>
-                <div className={classes.popup}>
-                  <span>Você tem certeza?</span>
-                  <div>
-                    <Button
-                      fullWidth
-                      className={classes.cancel}
-                      onClick={() => confirmedRemoveCard()}
-                    >
-                      Deletar
-                    </Button>
-                  </div>
-                </div>
-              </Fade>
-            )}
-          </Popper>
         </IconButton>
 
         <Button onClick={handleUpdate} className={classes.saveButtonOuter}>
