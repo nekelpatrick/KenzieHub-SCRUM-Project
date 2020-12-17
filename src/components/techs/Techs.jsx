@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+import { MenuItem } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
@@ -8,7 +9,7 @@ import Container from "@material-ui/core/Container";
 
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import Cookies from "js-cookie";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -31,17 +32,38 @@ const TechsForm = () => {
 
   const { register, handleSubmit } = useForm();
   const [ error, setError ] = useState({})
+  const [ techLevel, setTechLevel ] = useState('Iniciante')
 
-  const token = Cookies.get("token");
+  const token = useSelector((state) => (state.userToken))
 
   const handleForm = (data) => {
+    data.status = techLevel
     axios
       .post("https://kenziehub.me/users/techs", data, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => console.log(res))
-      .catch((err) => {setError(err); console.log(err)})
+      .catch((err) => { setError(err); console.log(err) })
   };
+
+  const status = [
+    {
+      value: "Iniciante",
+      label: "Iniciante",
+    },
+    {
+      value: "Intermediario",
+      label: "Intermediario",
+    },
+    {
+      value: "Avançado",
+      label: "Avançado",
+    }
+  ];
+
+  const handleChange = (event) => {
+    setTechLevel(event.target.value)
+  }
 
   return (
     <Container maxWidth="xs">
@@ -59,7 +81,7 @@ const TechsForm = () => {
                 autoComplete="title"
                 variant="outlined"
                 required
-                label="Título do trabalho"
+                label="Título de sua tech"
                 autoFocus
                 fullWidth
                 inputRef={register}
@@ -70,13 +92,21 @@ const TechsForm = () => {
               <TextField
                 name="status"
                 id="status"
-                autoComplete="description"
                 variant="outlined"
-                required
-                label="Seu nivel nesta tech"
                 fullWidth
-                inputRef={register}
-              />
+                select
+                autoFocus
+                fullWidth
+                value={ techLevel }
+                onChange={ handleChange }
+                inputRef={ register }
+              >
+                {status.map((level, index) => (
+                  <MenuItem key={ index } value={ level.value }>
+                    {level.label}
+                  </MenuItem>
+                ))}
+              </TextField>
             </Grid>
           </Grid>
 
