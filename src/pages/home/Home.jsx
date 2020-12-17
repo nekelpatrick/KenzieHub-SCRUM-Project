@@ -2,18 +2,12 @@ import React from "react";
 // import { RiArrowDownSLine } from "react-icons/ri";
 
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 // import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Collapse,
-  Typography,
-  Container,
-  Button,
-  IconButton,
-  Box,
-} from "@material-ui/core";
+import { Collapse, Typography, Container } from "@material-ui/core";
 import { RiArrowRightSLine } from "react-icons/ri";
 
 const useStyles = makeStyles((theme) => ({
@@ -25,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    // ["@media (min-height:600px)"]: { marginTop: "-25%" },
     ["@media (max-width:700px)"]: { marginTop: "-28%" },
   },
   title: {
@@ -53,13 +46,20 @@ const useStyles = makeStyles((theme) => ({
       marginTop: "8%",
     },
   },
+  text: {
+    color: "#fff",
+    width: "30vw",
+    textAlign: "left",
+    marginTop: "4%",
+    ["@media (max-width:700px)"]: {
+      fontSize: "16px",
+      width: "60vw",
+      marginTop: "10%",
+    },
+  },
   logo: {
     width: "10vw",
   },
-
-  // gotoBox: {
-  //   marginTop: "0vh",
-  // },
 
   border: "solid 1px",
   goto: {
@@ -68,6 +68,8 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
     padding: "20px",
     position: "relative",
+    display: "flex",
+    alignItems: "center",
   },
 
   button: {
@@ -87,16 +89,9 @@ const useStyles = makeStyles((theme) => ({
   },
 
   arrow: {
-    width: "10vw",
-    height: "10vh",
-    color: "rgb(235, 237, 238)",
-    padding: "10px",
+    fontSize: 45,
+    color: "rgb(255, 255, 255)",
     transition: "1000ms ease-in-out",
-    textShadow: "10px 10px 10px 10px blue",
-
-    "&:hover": {
-      color: "rgb(84, 206, 236)",
-    },
     ["@media (max-width:700px)"]: { width: "45vw", height: "11vh" },
   },
 
@@ -109,6 +104,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = () => {
   const classes = useStyles();
+  const history = useHistory();
+  const token = useSelector((state) => state.userToken);
 
   const [checked, setChecked] = useState(false);
 
@@ -145,23 +142,17 @@ const Home = () => {
         </h3>
       </Typography>
 
-      {/* <Box className={classes.gotoBox}>
-        <Link className={classes.goto} to="/cadastro">
-          <span className={classes.linker}>Cadastre-se</span>
-          <HiOutlineArrowNarrowRight className={classes.arrow} />
-        </Link>
-      </Box> */}
-
-      <Link to="/cadastro" className={classes.goto}>
-        <Button variant="outlined" color="primary" className={classes.button}>
-          <IconButton className={classes.IconButton}>
-            <RiArrowRightSLine className={classes.arrow} />
-          </IconButton>
+      {!token && (
+        <Typography
+          className={classes.goto}
+          onClick={() => history.push("/cadastro")}
+        >
           <Typography className={classes.texto} variant="button">
             <span>Cadastre-se</span>
           </Typography>
-        </Button>
-      </Link>
+          <RiArrowRightSLine className={classes.arrow} />
+        </Typography>
+      )}
     </div>
   );
 };

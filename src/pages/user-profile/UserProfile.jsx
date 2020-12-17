@@ -341,7 +341,8 @@ export default function UserProfile() {
             <Alert
               className={classes.messages}
               severity={
-                updateMessage === "Senha antiga incorreta."
+                updateMessage === "Senha antiga incorreta." ||
+                updateMessage === "Imagem inválida."
                   ? "error"
                   : "success"
               }

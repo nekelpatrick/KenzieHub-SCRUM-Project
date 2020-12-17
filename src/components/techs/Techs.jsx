@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
+import { MenuItem } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
@@ -8,7 +10,7 @@ import Container from "@material-ui/core/Container";
 
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import Cookies from "js-cookie";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -18,29 +20,62 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   form: {
-    width: "90%", 
+    width: "90%",
     marginTop: theme.spacing(3),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  cancel: {
+    margin: theme.spacing(3, 0, 2),
+    backgroundColor: "#f48fb1",
+    color: "white",
+    "& :hover": {
+      backgroundColor: "red",
+    },
+  },
 }));
 
 const TechsForm = () => {
   const classes = useStyles();
+  const history = useHistory();
 
   const { register, handleSubmit } = useForm();
-  const [ error, setError ] = useState({})
+  const [error, setError] = useState({});
+  const [techLevel, setTechLevel] = useState("Iniciante");
 
-  const token = Cookies.get("token");
+  const token = useSelector((state) => state.userToken);
 
   const handleForm = (data) => {
+    data.status = techLevel;
     axios
       .post("https://kenziehub.me/users/techs", data, {
         headers: { Authorization: `Bearer ${token}` },
       })
-      .then((res) => console.log(res))
-      .catch((err) => {setError(err); console.log(err)})
+      .then((res) => history.push("/usuario"))
+      .catch((err) => {
+        setError(err);
+        console.log(err);
+      });
+  };
+
+  const status = [
+    {
+      value: "Iniciante",
+      label: "Iniciante",
+    },
+    {
+      value: "Intermediario",
+      label: "Intermediario",
+    },
+    {
+      value: "Avançado",
+      label: "Avançado",
+    },
+  ];
+
+  const handleChange = (event) => {
+    setTechLevel(event.target.value);
   };
 
   return (
@@ -59,7 +94,7 @@ const TechsForm = () => {
                 autoComplete="title"
                 variant="outlined"
                 required
-                label="Título do trabalho"
+                label="Título de sua tech"
                 autoFocus
                 fullWidth
                 inputRef={register}
@@ -70,15 +105,34 @@ const TechsForm = () => {
               <TextField
                 name="status"
                 id="status"
-                autoComplete="description"
                 variant="outlined"
-                required
-                label="Seu nivel nesta tech"
                 fullWidth
+                select
+                autoFocus
+                fullWidth
+                value={techLevel}
+                onChange={handleChange}
                 inputRef={register}
-              />
+              >
+                {status.map((level, index) => (
+                  <MenuItem key={index} value={level.value}>
+                    {level.label}
+                  </MenuItem>
+                ))}
+              </TextField>
             </Grid>
           </Grid>
+
+          <Button
+            onClick={() => history.push("/usuario")}
+            fullWidth
+            variant="contained"
+            style={{ backgroundColor: "red" }}
+            color="rgb(242, 107, 152)"
+            className={classes.cancel}
+          >
+            Cancelar
+          </Button>
 
           <Button
             type="submit"

@@ -1,9 +1,13 @@
-import { useEffect, useState } from "react";
+import React from "react";
+
+import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+
 import { getUserThunk } from "../../store/modules/user/thunk";
 
 import UserCard from "../../components/user-area-card/Card";
+import TechCard from "../../components/tech-card/TechCard";
 import Button from "@material-ui/core/Button";
 
 import { Grid, Paper, Tabs, Tab } from "@material-ui/core";
@@ -26,13 +30,12 @@ const useStyles = makeStyles((theme) => ({
 const UserArea = () => {
   const classes = useStyles();
 
-  const dispatch = useDispatch();
-
   const token = useSelector((state) => state.userToken);
-
   const user = useSelector((state) => state.user);
 
-  console.log(user);
+  const [inputCards, setInputCards] = useState([]);
+  const [techsCard, setTechsCard] = useState(user.techs || []);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getUserThunk(token));
@@ -44,6 +47,12 @@ const UserArea = () => {
   useEffect(() => setJobsCards(works), [works]);
 
   const [selector, setSelector] = useState(0);
+
+  const techs = user.techs;
+  useEffect(() => {
+    dispatch(getUserThunk(token));
+    setTechsCard(techs);
+  }, [techs]);
 
   const history = useHistory();
 
@@ -62,7 +71,7 @@ const UserArea = () => {
           centered
         >
           <Tab label="Seus Projetos" />
-          <Tab label="Suas Techs" />
+          <Tab label="Suas TechsCard" />
         </Tabs>
       </Paper>
 
@@ -94,13 +103,12 @@ const UserArea = () => {
       ) : (
         <>
           <Grid className={classes.root} container spacing={1}>
-            {jobsCards.map((inputCard, index) => (
+            {techsCard.map((tech, index) => (
               <Grid key={index} item xs={12} sm={6} md={4}>
-                <UserCard
-                  inputCards={jobsCards}
-                  setInputCards={setJobsCards}
-                  index={index}
-                  inputCard={inputCard}
+                <TechCard
+                  prevTechs={techsCard}
+                  setTechs={setTechsCard}
+                  tech={tech}
                 />
               </Grid>
             ))}
