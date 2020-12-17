@@ -8,6 +8,7 @@ import "./style.css";
 import { makeStyles } from "@material-ui/core/styles";
 import Pagination from "@material-ui/lab/Pagination";
 import UserCard from "../../components/user-card/UserCard";
+import FilterInput from "../../components/filter-input/FilterInput";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,18 +30,21 @@ export default function UsersList() {
 
   const [error, setError] = useState(false);
   const [page, setPage] = useState(1);
+  const [url, setUrl] = useState("https://kenziehub.me/users?perPage=15&page=");
   useEffect(() => {
-    dispatch(getUsersThunk(page, setError));
+    dispatch(getUsersThunk(url + page, setError));
     scroll.scrollToTop();
-  }, [page]);
+  }, [page, url]);
 
   const usersList = useSelector((state) => state.userList);
 
   const handleClick = (evt, value) => {
     // VERIFIES IF THERE IS CONTENT IN THE NEXT PAGE
-    axios.get("https://kenziehub.me/users?page=" + value).then((res) => {
-      res.data.length && setPage(value);
-    });
+    axios
+      .get("https://kenziehub.me/users?perPage=15&page=" + value)
+      .then((res) => {
+        res.data.length && setPage(value);
+      });
   };
 
   return (
@@ -48,20 +52,23 @@ export default function UsersList() {
       {error ? (
         <p>Ocorreu algum erro</p>
       ) : (
-        usersList.map((user, index) => {
-          return <UserCard user={user} key={index} />;
-        })
+        <>
+          <FilterInput setUrl={setUrl} />
+          {usersList.map((user, index) => {
+            return <UserCard user={user} key={index} />;
+          })}
+          <div className={classes.root}>
+            <Pagination
+              page={page}
+              onChange={handleClick}
+              siblingCount={-1}
+              count={page + 1}
+              variant="outlined"
+              shape="rounded"
+            />
+          </div>
+        </>
       )}
-      <div className={classes.root}>
-        <Pagination
-          page={page}
-          onChange={handleClick}
-          siblingCount={-1}
-          count={page + 1}
-          variant="outlined"
-          shape="rounded"
-        />
-      </div>
     </div>
   );
 }

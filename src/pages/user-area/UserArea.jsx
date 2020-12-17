@@ -1,9 +1,13 @@
 import React from "react";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+
+import { getUserThunk } from "../../store/modules/user/thunk";
 
 import UserCard from "../../components/user-area-card/Card";
+import TechCard from "../../components/tech-card/TechCard";
 import Button from "@material-ui/core/Button";
 
 import { Grid, Paper, Tabs, Tab } from "@material-ui/core";
@@ -12,7 +16,6 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    // margin: "1%",
     marginTop: "3%",
     paddingLeft: "30px",
     paddingRight: "30px",
@@ -27,9 +30,29 @@ const useStyles = makeStyles((theme) => ({
 const UserArea = () => {
   const classes = useStyles();
 
+  const token = useSelector((state) => state.userToken);
+  const user = useSelector((state) => state.user);
+
   const [inputCards, setInputCards] = useState([]);
+  const [techsCard, setTechsCard] = useState(user.techs || []);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUserThunk(token));
+  }, []);
+
+  const works = user.works;
+
+  const [jobsCards, setJobsCards] = useState(works);
+  useEffect(() => setJobsCards(works), [works]);
 
   const [selector, setSelector] = useState(0);
+
+  const techs = user.techs;
+  useEffect(() => {
+    dispatch(getUserThunk(token));
+    setTechsCard(techs);
+  }, [techs]);
 
   const history = useHistory();
 
@@ -48,18 +71,18 @@ const UserArea = () => {
           centered
         >
           <Tab label="Seus Projetos" />
-          <Tab label="Suas Techs" />
+          <Tab label="Suas TechsCard" />
         </Tabs>
       </Paper>
 
       {selector === 0 ? (
         <>
           <Grid className={classes.root} container spacing={1}>
-            {inputCards.map((inputCard, index) => (
+            {jobsCards.map((inputCard, index) => (
               <Grid key={index} item xs={12} sm={6} md={4}>
                 <UserCard
-                  inputCards={inputCards}
-                  setInputCards={setInputCards}
+                  inputCards={jobsCards}
+                  setInputCards={setJobsCards}
                   index={index}
                   inputCard={inputCard}
                 />
@@ -80,13 +103,12 @@ const UserArea = () => {
       ) : (
         <>
           <Grid className={classes.root} container spacing={1}>
-            {inputCards.map((inputCard, index) => (
+            {techsCard.map((tech, index) => (
               <Grid key={index} item xs={12} sm={6} md={4}>
-                <UserCard
-                  inputCards={inputCards}
-                  setInputCards={setInputCards}
-                  index={index}
-                  inputCard={inputCard}
+                <TechCard
+                  prevTechs={techsCard}
+                  setTechs={setTechsCard}
+                  tech={tech}
                 />
               </Grid>
             ))}

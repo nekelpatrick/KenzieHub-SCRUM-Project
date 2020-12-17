@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import Cookies from "js-cookie";
 
 import { getUserThunk, updateUserThunk } from "../../store/modules/user/thunk";
 
@@ -343,7 +341,8 @@ export default function UserProfile() {
             <Alert
               className={classes.messages}
               severity={
-                updateMessage === "Senha antiga incorreta."
+                updateMessage === "Senha antiga incorreta." ||
+                updateMessage === "Imagem inválida."
                   ? "error"
                   : "success"
               }

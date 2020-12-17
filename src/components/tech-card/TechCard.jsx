@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
@@ -10,13 +11,13 @@ import {
   CardContent,
   CardActions,
   Card,
+  MenuItem,
 } from "@material-ui/core";
+import axios from "axios";
 
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { ImCheckboxChecked } from "react-icons/im";
-import axios from "axios";
-import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,44 +59,61 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UserCard({
-  inputCards,
-  setInputCards,
-  inputCard,
-  index,
-}) {
+export default function TechCard({ tech, setTechs, prevTechs }) {
   const classes = useStyles();
-
-  const [edit, setEdit] = useState(true);
-
   const token = useSelector((state) => state.userToken);
 
-  const enableEdit = () => {
-    setEdit(false);
-  };
+  const [edit, setEdit] = useState(true);
+  const [techLevel, setTechLevel] = useState(tech.status);
 
-  const disableEdit = () => {
+  const handleUpdate = () => {
     setEdit(true);
-
-    axios.put(`https://kenziehub.me/users/works/${inputCard.id}`, inputCard, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    axios
+      .put(
+        `https://kenziehub.me/users/techs/${tech.id}`,
+        { status: techLevel },
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      )
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
 
-  const handleChangeInput = (index, event) => {
-    const values = [...inputCards];
-    values[index][event.target.name] = event.target.value;
-    setInputCards(values);
+  const handleRemoveCard = () => {
+    const newTechs = prevTechs.filter((el) => {
+      return el.title !== tech.title;
+    });
+    setTechs(newTechs);
+    axios
+      .delete("https://kenziehub.me/users/techs/" + tech.id, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
 
-  const handleRemoveCard = (index) => {
-    const values = [...inputCards];
-    values.splice(index, 1);
-    setInputCards(values);
+  const status = [
+    {
+      value: "Iniciante",
+      label: "Iniciante",
+    },
+    {
+      value: "Intermediario",
+      label: "Intermediario",
+    },
+    {
+      value: "Avançado",
+      label: "Avançado",
+    },
+  ];
 
-    axios.delete(`https://kenziehub.me/users/works/${inputCard.id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+  const handleChange = (event) => {
+    setTechLevel(event.target.value);
   };
 
   return (
@@ -106,53 +124,47 @@ export default function UserCard({
             <TextField
               name="title"
               className={classes.textField}
-              disabled={edit}
+              disabled={true}
               id="outlined-multiline-flexible"
-              label="Nome do Projeto "
+              label="Nome da Tecnologia"
               multiline
               rowsMax={2}
-              value={inputCard.title}
+              fullWidth
+              value={tech.title}
               variant="outlined"
-              onChange={(event) => handleChangeInput(index, event)}
             />
+
             <TextField
-              name="desc"
-              className={classes.textField}
+              name="status"
+              id="status"
+              variant="outlined"
+              select
+              autoFocus
               disabled={edit}
-              id="outlined-multiline-static"
-              label="Descreva o projeto"
-              multiline
-              rows={5}
-              variant="outlined"
-              value={inputCard.description}
-              onChange={(event) => handleChangeInput(index, event)}
-            />
-            <TextField
-              name="url"
-              className={classes.textField}
-              disabled={true}
-              type="url"
-              id="outlined-textarea"
-              label="Link para o seu projeto"
-              multiline
-              variant="outlined"
-              value={inputCard.deploy_url}
-              onChange={(event) => handleChangeInput(index, event)}
-            />
+              fullWidth
+              value={techLevel}
+              onChange={handleChange}
+            >
+              {status.map((level, index) => (
+                <MenuItem key={index} value={level.value}>
+                  {level.label}
+                </MenuItem>
+              ))}
+            </TextField>
           </div>
         </form>
       </CardContent>
 
       <CardActions className={classes.buttons}>
-        <IconButton onClick={enableEdit}>
+        <IconButton onClick={() => setEdit(false)}>
           <FaEdit className={classes.editButton} />
         </IconButton>
 
-        <IconButton onClick={() => handleRemoveCard(index)}>
+        <IconButton onClick={() => handleRemoveCard()}>
           <MdDelete className={classes.deleteButton} />
         </IconButton>
 
-        <Button onClick={disableEdit} className={classes.saveButtonOuter}>
+        <Button onClick={handleUpdate} className={classes.saveButtonOuter}>
           <IconButton className={classes.saveButton}>
             <ImCheckboxChecked></ImCheckboxChecked>
           </IconButton>
