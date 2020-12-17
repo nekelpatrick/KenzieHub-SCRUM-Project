@@ -33,7 +33,6 @@ const UserArea = () => {
   const token = useSelector((state) => state.userToken);
   const user = useSelector((state) => state.user);
 
-  const [inputCards, setInputCards] = useState([]);
   const [techsCard, setTechsCard] = useState(user.techs || []);
   const dispatch = useDispatch();
 
@@ -43,7 +42,7 @@ const UserArea = () => {
 
   const works = user.works;
 
-  const [jobsCards, setJobsCards] = useState(works);
+  const [jobsCards, setJobsCards] = useState([]);
   useEffect(() => setJobsCards(works), [works]);
 
   const [selector, setSelector] = useState(0);
@@ -75,7 +74,7 @@ const UserArea = () => {
         </Tabs>
       </Paper>
 
-      {selector === 0 ? (
+      {(selector === 0) & !!jobsCards ? (
         <>
           <Grid className={classes.root} container spacing={1}>
             {jobsCards.map((inputCard, index) => (
@@ -101,29 +100,31 @@ const UserArea = () => {
           </Button>
         </>
       ) : (
-        <>
-          <Grid className={classes.root} container spacing={1}>
-            {techsCard.map((tech, index) => (
-              <Grid key={index} item xs={12} sm={6} md={4}>
-                <TechCard
-                  prevTechs={techsCard}
-                  setTechs={setTechsCard}
-                  tech={tech}
-                />
-              </Grid>
-            ))}
-          </Grid>
-          <Button
-            type="submit"
-            size="medium"
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={() => history.push("/newtech")}
-          >
-            Adicione nova tecnologia
-          </Button>
-        </>
+        !!techsCard && (
+          <>
+            <Grid className={classes.root} container spacing={1}>
+              {techsCard.map((tech, index) => (
+                <Grid key={index} item xs={12} sm={6} md={4}>
+                  <TechCard
+                    prevTechs={techsCard}
+                    setTechs={setTechsCard}
+                    tech={tech}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+            <Button
+              type="submit"
+              size="medium"
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={() => history.push("/newtech")}
+            >
+              Adicione nova tecnologia
+            </Button>
+          </>
+        )
       )}
     </div>
   );
