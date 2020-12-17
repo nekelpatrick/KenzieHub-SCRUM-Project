@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
@@ -6,11 +7,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import {
   IconButton,
   Button,
-  FormControl,
   TextField,
   CardContent,
   CardActions,
   Card,
+  MenuItem,
 } from "@material-ui/core";
 import axios from "axios";
 
@@ -20,7 +21,6 @@ import { ImCheckboxChecked } from "react-icons/im";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // minWidth: 350,
     marginTop: "10%",
     maxWidth: 400,
   },
@@ -47,7 +47,6 @@ const useStyles = makeStyles((theme) => ({
   },
   textField: {
     "& .MuiInputBase-root": {
-      // width: "13.5vw",
       padding: "20px",
     },
     "& .MuiFormLabel-root": {
@@ -60,101 +59,112 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TechCard({
-  inputTechCards,
-  setInputTechCards,
-  inputTechCard,
-  index,
-}) {
+export default function TechCard({ tech, setTechs, prevTechs }) {
   const classes = useStyles();
+  const token = useSelector((state) => state.userToken);
 
-    // console.log(inputTechCards)
-    // console.log(inputTechCard)
-    // console.log(index)
-
-  const [value, setValue] = useState("");
   const [edit, setEdit] = useState(true);
+  const [techLevel, setTechLevel] = useState(tech.status);
 
-  // const handleChange = (event) => {
-  //   setValue(event.target.value);
-  // };
-
-  const enableEdit = () => {
-    setEdit(false);
-  };
-
-  const disableEdit = () => {
+  const handleUpdate = () => {
     setEdit(true);
-  };
-
-  const handleChangeInput = (index, event) => {
-    // console.log(index, event.target.name);
-    // const values = [...inputTechCards];
-    console.log(event)
-    const data = event.target.value;
-    console.log(data)
-    // console.log(inputTechCards);
-    // values[index][event.target.name] = event.target.value;
-    // setInputTechCards(values);
-  };
-
-  const handleRemoveCard = (index) => {
-    console.log(inputTechCard.id)
-    // const values = [...inputTechCards];
-    // values.splice(index, 1);
-    // setInputTechCards(values);
     axios
-        .delete("https://kenziehub.me/users/techs/" + inputTechCard.id)
-        .then((res) => console.log(res))
-        .catch(err => console.log(err))
+      .put(
+        `https://kenziehub.me/users/techs/${tech.id}`,
+        { status: techLevel },
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      )
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
+
+  const handleRemoveCard = () => {
+    axios
+      .delete("https://kenziehub.me/users/techs/" + tech.id, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+    const newTechs = prevTechs.filter((el) => {
+      return el.title !== tech.title;
+    });
+    setTechs(newTechs);
+  };
+
+  const status = [
+    {
+      value: "Iniciante",
+      label: "Iniciante",
+    },
+    {
+      value: "Intermediario",
+      label: "Intermediario",
+    },
+    {
+      value: "Avançado",
+      label: "Avançado",
+    },
+  ];
+
+  const handleChange = (event) => {
+    setTechLevel(event.target.value);
   };
 
   return (
     <Card className={classes.root} variant="outlined">
       <CardContent>
         <form className={classes.form} noValidate autoComplete="off">
-          {/*  */}
           <div>
             <TextField
               name="title"
               className={classes.textField}
-              disabled={edit}
+              disabled={true}
               id="outlined-multiline-flexible"
-              label="Nome do Projeto "
+              label="Nome da Tecnologia"
               multiline
               rowsMax={2}
-              value={inputTechCard.title}
+              fullWidth
+              value={tech.title}
               variant="outlined"
-              onChange={(event) => handleChangeInput(index, event)}
             />
-            
+
             <TextField
               name="status"
-              className={classes.textField}
-              disabled={edit}
-              type="text"
-              id="outlined-textarea"
-              label="Link para o seu projeto"
-              placeholder="https://exemplo.com/example"
-              multiline
+              id="status"
               variant="outlined"
-              value={inputTechCard.status}
-              onChange={(event) => handleChangeInput(index, event)}
-            />
+              select
+              autoFocus
+              disabled={edit}
+              fullWidth
+              value={techLevel}
+              onChange={handleChange}
+            >
+              {status.map((level, index) => (
+                <MenuItem key={index} value={level.value}>
+                  {level.label}
+                </MenuItem>
+              ))}
+            </TextField>
           </div>
         </form>
       </CardContent>
 
       <CardActions className={classes.buttons}>
-        <IconButton onClick={enableEdit}>
+        <IconButton onClick={() => setEdit(false)}>
           <FaEdit className={classes.editButton} />
         </IconButton>
 
-        <IconButton onClick={() => handleRemoveCard(index)}>
+        <IconButton onClick={() => handleRemoveCard()}>
           <MdDelete className={classes.deleteButton} />
         </IconButton>
 
-        <Button onClick={disableEdit} className={classes.saveButtonOuter}>
+        <Button onClick={handleUpdate} className={classes.saveButtonOuter}>
           <IconButton className={classes.saveButton}>
             <ImCheckboxChecked></ImCheckboxChecked>
           </IconButton>

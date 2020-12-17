@@ -31,19 +31,19 @@ const useStyles = makeStyles((theme) => ({
 const UserArea = () => {
   const classes = useStyles();
 
-  const [inputCards, setInputCards] = useState([]);
-  const [inputTechCards, setInputTechCards] = useState([]);
-
-  const [selector, setSelector] = useState(0);
-
   const token = useSelector((state) => state.userToken);
   const user = useSelector((state) => state.user);
+
+  const [inputCards, setInputCards] = useState([]);
+  const [techs, setTechs] = useState(user.techs || []);
+
+  const [selector, setSelector] = useState(0);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getUserThunk(token));
-  }, []);
+  }, [techs]);
 
   const history = useHistory();
 
@@ -94,17 +94,12 @@ const UserArea = () => {
       ) : (
         <>
           <Grid className={classes.root} container spacing={1}>
-            {user.techs && user.techs.map((inputTechCard, index) => (
-              <Grid key={index} item xs={12} sm={6} md={4}>
-                <TechCard
-                  inputTechCards={inputTechCards}
-                  setInputTechCards={setInputTechCards}
-                  index={index}
-                  inputTechCard={inputTechCard}
-                />
-              </Grid>
-            )
-            )}
+            {user.techs &&
+              user.techs.map((tech, index) => (
+                <Grid key={index} item xs={12} sm={6} md={4}>
+                  <TechCard prevTechs={techs} setTechs={setTechs} tech={tech} />
+                </Grid>
+              ))}
           </Grid>
           <Button
             type="submit"
