@@ -3,6 +3,9 @@ const userToken = (state = "", action) => {
     case "@token/SET_TOKEN":
       const { token } = action;
       return (state = token);
+
+    case "@token/GET_TOKEN":
+      return state;
     default:
       return state;
   }
