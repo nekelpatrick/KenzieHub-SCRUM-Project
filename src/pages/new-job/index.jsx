@@ -7,6 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 
 import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import * as yup from "yup";
@@ -26,13 +27,22 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  cancel: {
+    margin: theme.spacing(3, 0, 2),
+    backgroundColor: "#f48fb1",
+    color: "white",
+    "& :hover": {
+      backgroundColor: "red",
+    },
+  },
 }));
 
 const JobsForm = () => {
   const classes = useStyles();
 
   const token = useSelector((state) => state.userToken);
-  console.log(token);
+
+  const history = useHistory();
 
   const confirmartion = yup.object().shape({
     title: yup.string().required("Campo Obrigatório"),
@@ -45,12 +55,11 @@ const JobsForm = () => {
   });
 
   const handleForm = (data) => {
-    console.log(data);
     axios
       .post("https://kenziehub.me/users/works", data, {
         headers: { Authorization: `Bearer ${token}` },
       })
-      .then((res) => console.log(res));
+      .then(() => history.push("/usuario"));
   };
 
   return (
@@ -108,6 +117,17 @@ const JobsForm = () => {
               />
             </Grid>
           </Grid>
+
+          <Button
+            onClick={() => history.push("/usuario")}
+            fullWidth
+            variant="contained"
+            style={{ backgroundColor: "red" }}
+            color="rgb(242, 107, 152)"
+            className={classes.cancel}
+          >
+            Cancelar
+          </Button>
 
           <Button
             type="submit"

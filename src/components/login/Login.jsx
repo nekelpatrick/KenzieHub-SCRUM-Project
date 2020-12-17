@@ -20,6 +20,7 @@ import { useHistory } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { setTokenThunk } from "../../store/modules/token/thunk";
+import { getUserThunk } from "../../store/modules/user/thunk";
 
 function Copyright() {
   return (
@@ -88,6 +89,7 @@ export default function SignIn() {
           : window.localStorage.setItem("token", res.data.token);
 
         dispatch(setTokenThunk(res.data.token));
+        dispatch(getUserThunk(res.data.token));
 
         history.push("/usuarios");
       })
@@ -96,7 +98,7 @@ export default function SignIn() {
 
   return (
     <Container component="main" maxWidth="xs">
-      {Cookies.get("token") && history.push("/usuários")}
+      {Cookies.get("token") && history.push("/usuarios")}
       <CssBaseline />
 
       <div className={classes.paper}>

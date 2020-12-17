@@ -1,7 +1,7 @@
-import React from "react";
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { getUserThunk } from "../../store/modules/user/thunk";
 
 import UserCard from "../../components/user-area-card/Card";
 import Button from "@material-ui/core/Button";
@@ -12,7 +12,6 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    // margin: "1%",
     marginTop: "3%",
     paddingLeft: "30px",
     paddingRight: "30px",
@@ -27,7 +26,22 @@ const useStyles = makeStyles((theme) => ({
 const UserArea = () => {
   const classes = useStyles();
 
-  const [inputCards, setInputCards] = useState([]);
+  const dispatch = useDispatch();
+
+  const token = useSelector((state) => state.userToken);
+
+  const user = useSelector((state) => state.user);
+
+  console.log(user);
+
+  useEffect(() => {
+    dispatch(getUserThunk(token));
+  }, []);
+
+  const works = user.works;
+
+  const [jobsCards, setJobsCards] = useState(works);
+  useEffect(() => setJobsCards(works), [works]);
 
   const [selector, setSelector] = useState(0);
 
@@ -55,11 +69,11 @@ const UserArea = () => {
       {selector === 0 ? (
         <>
           <Grid className={classes.root} container spacing={1}>
-            {inputCards.map((inputCard, index) => (
+            {jobsCards.map((inputCard, index) => (
               <Grid key={index} item xs={12} sm={6} md={4}>
                 <UserCard
-                  inputCards={inputCards}
-                  setInputCards={setInputCards}
+                  inputCards={jobsCards}
+                  setInputCards={setJobsCards}
                   index={index}
                   inputCard={inputCard}
                 />
