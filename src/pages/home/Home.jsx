@@ -2,18 +2,12 @@ import React from "react";
 // import { RiArrowDownSLine } from "react-icons/ri";
 
 import { useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 // import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Collapse,
-  Typography,
-  Container,
-  Button,
-  IconButton,
-  Box,
-} from "@material-ui/core";
+import { Collapse, Typography, Container } from "@material-ui/core";
 import { RiArrowRightSLine } from "react-icons/ri";
 
 const useStyles = makeStyles((theme) => ({
@@ -25,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    // ["@media (min-height:600px)"]: { marginTop: "-25%" },
     ["@media (max-width:700px)"]: { marginTop: "-28%" },
   },
   title: {
@@ -67,10 +60,6 @@ const useStyles = makeStyles((theme) => ({
   logo: {
     width: "10vw",
   },
-
-  // gotoBox: {
-  //   marginTop: "0vh",
-  // },
 
   border: "solid 1px",
   goto: {
@@ -116,6 +105,7 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
   const classes = useStyles();
   const history = useHistory();
+  const token = useSelector((state) => state.userToken);
 
   const [checked, setChecked] = useState(false);
 
@@ -145,46 +135,24 @@ const Home = () => {
       </Container>
 
       <Typography>
-        <h1 className={classes.desc}>
-          Conheca os devs da Kenzie e suas competências.
-        </h1>
-        <p className={classes.text}>
-          Na dev net você consegue acessar uma série perfils de desenvolvedores
-          que estudam na Kenzie Academy Brasil, descubrir quais tecnologias eles
-          já conhecem e até acessar projetos feitos por eles. Além disso você
-          podera fazer o mesmo! Aqui você consiguirá compartilhar as tecnologias
-          que você conhece e os trabalhos que você já fez com uma comunidade
-          super ativa muito interessada em ver o que você tem para mostrar!
-        </p>
+        <h3 className={classes.desc}>
+          Dev Net é uma rede de desenvolvedores focada em Networking. Aqui você
+          poderá mostrar a todos suas habilidades, conhecimentos e até
+          compartilhar seus projetos. Não perca tempo, cadastre-se já!
+        </h3>
       </Typography>
 
-      {/* <Box className={classes.gotoBox}>
-        <Link className={classes.goto} to="/cadastro">
-          <span className={classes.linker}>Cadastre-se</span>
-          <HiOutlineArrowNarrowRight className={classes.arrow} />
-        </Link>
-      </Box> */}
-
-      <Typography
-        className={classes.goto}
-        onClick={() => history.push("/cadastro")}
-      >
-        <Typography className={classes.texto} variant="button">
-          <span>Cadastre-se</span>
-        </Typography>
-        <RiArrowRightSLine className={classes.arrow} />
-      </Typography>
-
-      {/* <Link to="/cadastro" className={classes.goto}>
-        <Button variant="outlined" color="primary" className={classes.button}>
-          <IconButton className={classes.IconButton}>
-            <RiArrowRightSLine className={classes.arrow} />
-          </IconButton>
+      {!token && (
+        <Typography
+          className={classes.goto}
+          onClick={() => history.push("/cadastro")}
+        >
           <Typography className={classes.texto} variant="button">
             <span>Cadastre-se</span>
           </Typography>
-        </Button>
-      </Link> */}
+          <RiArrowRightSLine className={classes.arrow} />
+        </Typography>
+      )}
     </div>
   );
 };
