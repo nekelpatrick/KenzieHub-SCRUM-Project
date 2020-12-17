@@ -37,7 +37,7 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(10),
+    marginTop: theme.spacing(12),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -98,7 +98,6 @@ export default function SignIn() {
 
   return (
     <Container component="main" maxWidth="xs">
-      {Cookies.get("token") && history.push("/usuarios")}
       <CssBaseline />
 
       <div className={classes.paper}>
@@ -172,7 +171,7 @@ export default function SignIn() {
             </Grid>
 
             <Grid item>
-              <Link href="/cadastro" variant="body2">
+              <Link onClick={() => history.push("/cadastro")} variant="body2">
                 {"Não possuí uma conta?"}
               </Link>
             </Grid>
