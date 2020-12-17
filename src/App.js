@@ -1,7 +1,10 @@
 import "./App.css";
 
+import { useEffect } from "react";
 import { Switch, Route, useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import Cookies from "js-cookie";
+import { setTokenThunk } from "./store/modules/token/thunk";
 
 import Navbar from "./components/navbar/Navbar";
 import Login from "./components/login/Login";
@@ -10,13 +13,18 @@ import UsersList from "./pages/users-list/UserList";
 import UserProfile from "./pages/user-profile/UserProfile";
 import UserArea from "./pages/user-area/UserArea";
 import Techs from "./components/techs/Techs";
-
 import RegisterPage from "./pages/register";
 import JobsForm from "./pages/new-job";
 
 function App() {
   const token = useSelector((state) => state.userToken);
   const history = useHistory();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const tokenCookie = Cookies.get("token") || "";
+    !!tokenCookie && dispatch(setTokenThunk(tokenCookie));
+  }, []);
   return (
     <div className="App">
       <nav>

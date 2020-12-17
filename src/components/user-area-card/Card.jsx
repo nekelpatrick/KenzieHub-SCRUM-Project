@@ -6,7 +6,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import {
   IconButton,
   Button,
-  FormControl,
   TextField,
   CardContent,
   CardActions,
@@ -16,10 +15,11 @@ import {
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { ImCheckboxChecked } from "react-icons/im";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // minWidth: 350,
     marginTop: "10%",
     maxWidth: 400,
   },
@@ -46,7 +46,6 @@ const useStyles = makeStyles((theme) => ({
   },
   textField: {
     "& .MuiInputBase-root": {
-      // width: "13.5vw",
       padding: "20px",
     },
     "& .MuiFormLabel-root": {
@@ -67,12 +66,9 @@ export default function UserCard({
 }) {
   const classes = useStyles();
 
-  const [value, setValue] = useState("");
   const [edit, setEdit] = useState(true);
 
-  // const handleChange = (event) => {
-  //   setValue(event.target.value);
-  // };
+  const token = useSelector((state) => state.userToken);
 
   const enableEdit = () => {
     setEdit(false);
@@ -80,10 +76,13 @@ export default function UserCard({
 
   const disableEdit = () => {
     setEdit(true);
+
+    axios.put(`https://kenziehub.me/users/works/${inputCard.id}`, inputCard, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
   };
 
   const handleChangeInput = (index, event) => {
-    // console.log(index, event.target.name);
     const values = [...inputCards];
     values[index][event.target.name] = event.target.value;
     setInputCards(values);
@@ -93,13 +92,16 @@ export default function UserCard({
     const values = [...inputCards];
     values.splice(index, 1);
     setInputCards(values);
+
+    axios.delete(`https://kenziehub.me/users/works/${inputCard.id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
   };
 
   return (
     <Card className={classes.root} variant="outlined">
       <CardContent>
         <form className={classes.form} noValidate autoComplete="off">
-          {/*  */}
           <div>
             <TextField
               name="title"
@@ -119,24 +121,22 @@ export default function UserCard({
               disabled={edit}
               id="outlined-multiline-static"
               label="Descreva o projeto"
-              placeholder="Descreva o projeto"
               multiline
               rows={5}
               variant="outlined"
-              value={inputCard.desc}
+              value={inputCard.description}
               onChange={(event) => handleChangeInput(index, event)}
             />
             <TextField
               name="url"
               className={classes.textField}
-              disabled={edit}
+              disabled={true}
               type="url"
               id="outlined-textarea"
               label="Link para o seu projeto"
-              placeholder="https://exemplo.com/example"
               multiline
               variant="outlined"
-              value={inputCard.url}
+              value={inputCard.deploy_url}
               onChange={(event) => handleChangeInput(index, event)}
             />
           </div>
