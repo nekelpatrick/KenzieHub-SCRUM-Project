@@ -139,9 +139,9 @@ const Home = () => {
 
       <Typography>
         <h3 className={classes.desc}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl
-          eros, pulvinar facilisis justo mollis, auctor consequat urna. Morbi a
-          bibendum metus.
+          Dev Net é uma rede de desenvolvedores focada em Networking. Aqui você
+          poderá mostrar a todos suas habilidades, conhecimentos e até
+          compartilhar seus projetos. Não perca tempo, cadastre-se já!
         </h3>
       </Typography>
 
